@@ -12,7 +12,13 @@
     <context:annotation-config />
     <context:property-placeholder location="classpath:wmq.properties" ignore-unresolvable="true"/>
 
+    <!--
+    Main idea:
+        MQQueueConnectionFactory -> UserCredentialsConnectionFactoryAdapter -> ConnectionFactory
+    -->
+
     <!-- WebSphere MQ Connection Factory -->
+
     <!-- Use this factory only in BINDING mode -->
     <bean id="mqBindingConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
             p:hostName="${wmq.qmgr.host}"
