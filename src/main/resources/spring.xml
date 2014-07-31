@@ -54,11 +54,16 @@
 
     <bean id="mqListener" class="ru.codeunited.spring.mq.examples.MQMessageListener"/>
 
+    <bean id="messageSender" class="ru.codeunited.spring.mq.examples.MQMessageSender"
+            p:destinationQueue="${queue.request}"
+            p:replyToQueue="${queue.reply}">
+    </bean>
+
     <jms:listener-container
             container-type="default"
             connection-factory="jmsQueueConnectionFactorySecured"
             concurrency="3-5"
             acknowledge="auto">
-        <jms:listener destination="${wmq.queue.request}" ref="mqListener" response-destination="ETP.DEFAULT.RESP"/>
+        <jms:listener destination="${wmq.queue.request}" ref="mqListener"/>
     </jms:listener-container>
 </beans>
