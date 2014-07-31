@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <context:annotation-config />
+    <context:property-placeholder location="classpath:wmq.properties" ignore-unresolvable="true"/>
+
+    <!-- WebSphere MQ Connection Factory -->
+    <!-- Use this factory only in BINDING mode -->
+    <bean id="mqBindingConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
+            p:hostName="${wmq.qmgr.host}"
+            p:port="${wmq.qmgr.port}"
+            p:queueManager="${wmq.qmgr.name}"
+            p:transportType="0"
+            p:CCSID="${wmq.qmgr.ccid}">
+    </bean>
+    <!-- Use this factory in CLIENT mode -->
+    <bean id="mqClientConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
+          p:hostName="${wmq.qmgr.host}"
+          p:port="${wmq.qmgr.port}"
+          p:queueManager="${wmq.qmgr.name}"
+          p:transportType="1"
+          p:CCSID="${wmq.qmgr.ccid}"
+          p:channel="${wmq.qmgr.channel}">
+    </bean>
+
+    <!-- JMS Queue Connection Factory -->
+    <bean id="jmsQueueConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory"
+            p:targetConnectionFactory-ref="mqBindingConnectionFactory"
+            p:reconnectOnException="true"> <!-- non-container's use -->
+    </bean>
+    <bean id="jmsQueueConnectionFactorySecured" class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
+          p:targetConnectionFactory-ref="mqClientConnectionFactory"
+          p:username="Igor@localhost"
+          p:password="!#===(*_*)====#! Like? Ok, put your password here.">
+    </bean>
+
+    <!-- JMS Destination Resolver -->
+    <bean id="jmsDestinationResolver" class="org.springframework.jms.support.destination.DynamicDestinationResolver"/>
+
+    <!-- JMS Queue Template -->
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate"
+            p:connectionFactory-ref="jmsQueueConnectionFactorySecured"
+            p:destinationResolver-ref="jmsDestinationResolver"
+            p:receiveTimeout="10000">
+    </bean>
+
+    <bean id="mqListener" class="ru.codeunited.spring.mq.examples.MQMessageListener"/>
+
+    <jms:listener-container
+            container-type="default"
+            connection-factory="jmsQueueConnectionFactorySecured"
+            concurrency="3-5"
+            acknowledge="auto">
+        <jms:listener destination="${wmq.queue.request}" ref="mqListener" response-destination="ETP.DEFAULT.RESP"/>
+    </jms:listener-container>
+</beans>
