@@ -60,7 +60,7 @@ public class MQMessageListener implements MessageListener {
                     LOG.info(format("Sent reply for %s with MessageId=%s", messageId, reposentRef.get().getJMSMessageID()));
                 }
 
-
+                throw new RuntimeException("Boom!");
             } else {
                 final String wrongTypeMessage = "We don't handle messages other then TextMessage.";
                 LOG.warning(wrongTypeMessage);

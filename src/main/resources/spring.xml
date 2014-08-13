@@ -47,13 +47,16 @@
           p:username="Igor@localhost"
           p:password="!#===(*_*)====#! Like? Ok, put your password here.">
     </bean>
+    <bean id="jmsQueueCachingConnectionFactorySecured" class="org.springframework.jms.connection.CachingConnectionFactory"
+          p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured">
+    </bean>
 
     <!-- JMS Destination Resolver -->
     <bean id="jmsDestinationResolver" class="org.springframework.jms.support.destination.DynamicDestinationResolver"/>
 
     <!-- JMS Queue Template -->
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate"
-            p:connectionFactory-ref="jmsQueueConnectionFactorySecured"
+            p:connectionFactory-ref="jmsQueueCachingConnectionFactorySecured"
             p:destinationResolver-ref="jmsDestinationResolver"
             p:receiveTimeout="10000">
     </bean>
@@ -67,7 +70,7 @@
 
     <jms:listener-container
             container-type="default"
-            connection-factory="jmsQueueConnectionFactorySecured"
+            connection-factory="jmsQueueCachingConnectionFactorySecured"
             concurrency="3-5"
             acknowledge="auto">
         <jms:listener destination="${wmq.queue.request}" ref="mqListener"/>

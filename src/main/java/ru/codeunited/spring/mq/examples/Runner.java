@@ -23,7 +23,7 @@ public class Runner {
 
             @Override
             public void run() {
-                int count = 100;
+                int count = 2;
                 while(count-->0) {
                     sender.send("Message with " + System.nanoTime());
                 }
