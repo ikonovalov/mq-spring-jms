@@ -72,7 +72,7 @@
             container-type="default"
             connection-factory="jmsQueueCachingConnectionFactorySecured"
             concurrency="3-5"
-            acknowledge="auto">
+            acknowledge="transacted">
         <jms:listener destination="${wmq.queue.request}" ref="mqListener"/>
     </jms:listener-container>
 </beans>
