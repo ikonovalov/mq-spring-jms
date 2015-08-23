@@ -5,7 +5,7 @@ This is juat a sample application. That shows how to interact with WebSphere MQ 
 
 Scenario is very simple:
 + MQSender send message to EPT.Q1 with ReplyToQ = ETP.DEFAULT.RESP.
-+ MQListener listen ETP.Q1 and in ReplyToQ is specified reply to it.
++ MQListener listen ETP.Q1 and if ReplyToQ is specified reply to it.
 
 **GPL** licence.
 
