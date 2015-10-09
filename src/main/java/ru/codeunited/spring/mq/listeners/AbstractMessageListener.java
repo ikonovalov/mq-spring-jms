@@ -1,9 +1,7 @@
 package ru.codeunited.spring.mq.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
-import ru.codeunited.spring.mq.sender.MQMessageSender;
 import ru.codeunited.spring.mq.sender.MessageSender;
 
 import javax.jms.*;
@@ -26,12 +24,12 @@ public abstract class AbstractMessageListener implements MessageListener {
     @Autowired
     private MessageSender sender;
 
-    public Logger getLogger() {
+    Logger getLogger() {
         return LOG;
     }
 
-    protected void replyIfRequired(final Message request, final String messageBody){
-        Queue replyTo = null;
+    void replyIfRequired(final Message request, final String messageBody) {
+        Queue replyTo;
         try {
             replyTo = (Queue) request.getJMSReplyTo();
             sender.send(messageBody, replyTo.getQueueName());
@@ -41,7 +39,7 @@ public abstract class AbstractMessageListener implements MessageListener {
         }
     }
 
-    public boolean isTextMessage(Message message) {
+    protected boolean isTextMessage(Message message) {
         return message instanceof TextMessage;
     }
 

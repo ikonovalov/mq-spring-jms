@@ -62,6 +62,7 @@
             p:receiveTimeout="10000">
     </bean>
 
+    <!-- local transacted(TX) listener container -->
     <jms:listener-container
             container-type="default"
             connection-factory="jmsQueueCachingConnectionFactorySecured"
@@ -70,6 +71,7 @@
         <jms:listener destination="${queue.request.tx}" ref="MQMessageListener"/>
     </jms:listener-container>
 
+    <!-- client acknowledge(ACK) listener container -->
     <jms:listener-container
             container-type="default"
             connection-factory="jmsQueueCachingConnectionFactorySecured"

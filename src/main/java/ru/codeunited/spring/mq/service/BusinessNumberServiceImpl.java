@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @Service
 public class BusinessNumberServiceImpl implements BusinessService {
 
-    private Logger log = Logger.getLogger(BusinessNumberServiceImpl.class.getName());
+    private final Logger log = Logger.getLogger(BusinessNumberServiceImpl.class.getName());
 
     @Override
     public BusinessResponse processRequest(BusinessRequest request) {

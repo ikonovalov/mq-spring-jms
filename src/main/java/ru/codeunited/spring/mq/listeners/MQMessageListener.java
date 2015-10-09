@@ -8,8 +8,6 @@ import ru.codeunited.spring.mq.service.BusinessService;
 
 import javax.jms.*;
 
-import static java.lang.String.format;
-
 /**
  * Transport front-side.
  * Created by Igor on 2014.07.31.
@@ -24,21 +22,13 @@ public class MQMessageListener extends AbstractMessageListener {
     public void onMessage(Message message) {
         try {
             logMessage(message);
-
-            if (isTextMessage(message)) {
-                String payload = ((TextMessage) message).getText();
-
-                BusinessResponse response = businessService.processRequest(new BusinessRequest(payload));
-
-                replyIfRequired(message, response.getPayload());
-            } else {
-
-            }
+            String payload = ((TextMessage) message).getText();
+            BusinessResponse response = businessService.processRequest(new BusinessRequest(payload));
+            replyIfRequired(message, response.getPayload());
 
         } catch (ClassCastException cce) {
             replyIfRequired(message, "We don't handle messages other then TextMessage.");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             getLogger().severe(e.getMessage());
             throw new RuntimeException(e);
         }

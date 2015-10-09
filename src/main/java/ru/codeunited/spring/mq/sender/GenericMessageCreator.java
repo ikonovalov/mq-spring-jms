@@ -3,6 +3,7 @@ package ru.codeunited.spring.mq.sender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.jms.support.destination.DestinationResolver;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -24,6 +25,9 @@ public abstract class GenericMessageCreator<T, JmsTyped extends Message> impleme
 
     @Autowired
     private JmsTemplate jmsTemplate;
+
+    @Autowired
+    private DestinationResolver destinationResolver;
 
     protected GenericMessageCreator() {
         super();
@@ -56,7 +60,7 @@ public abstract class GenericMessageCreator<T, JmsTyped extends Message> impleme
     public Message createMessage(Session session) throws JMSException {
         JmsTyped tm = createTypedMessage(session, getMessageBody());
         if (needReply()) {
-            tm.setJMSReplyTo(jmsTemplate.getDestinationResolver().resolveDestinationName(session, this.replyToQueue , false));
+            tm.setJMSReplyTo(destinationResolver.resolveDestinationName(session, this.replyToQueue, false));
         }
         messageHolder = tm;
         return tm;

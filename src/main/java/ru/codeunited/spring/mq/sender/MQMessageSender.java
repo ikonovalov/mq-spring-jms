@@ -41,7 +41,7 @@ public class MQMessageSender implements MessageSender {
         GenericMessageCreator creator = context.getBean(TextMessageCreator.class)
                 .setMessageBody(message)
                 .setReplyToQueue(replyToQueue);
-        jmsTemplate.send(destinationQueue,creator);
+        jmsTemplate.send(destinationQueue, creator);
         return creator.getMessage();
     }
 }
