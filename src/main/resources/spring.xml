@@ -39,13 +39,13 @@
     </bean>
 
     <!-- JMS Queue Connection Factory -->
-    <bean id="jmsQueueConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory"
+    <!--<bean id="jmsQueueConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory"
             p:targetConnectionFactory-ref="mqBindingConnectionFactory"
-            p:reconnectOnException="true"> <!-- non-container's use -->
-    </bean>
+            p:reconnectOnException="true"> &lt;!&ndash; non-container's use &ndash;&gt;
+    </bean>-->
     <bean id="jmsQueueConnectionFactorySecured" class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
           p:targetConnectionFactory-ref="mqClientConnectionFactory"
-          p:username="ikonovalov"
+          p:username="${wmq.qmgr.username}"
           p:password="!#===(*_*)====#! Like? Ok, put your password here.">
     </bean>
     <bean id="jmsQueueCachingConnectionFactorySecured" class="org.springframework.jms.connection.CachingConnectionFactory"
