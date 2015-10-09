@@ -25,7 +25,7 @@ public class Runner {
             public void run() {
                 int count = 2;
                 while(count-->0) {
-                    sender.send("Message with " + System.nanoTime());
+                    sender.send(String.valueOf(System.nanoTime()));
                 }
             }
         }).start();

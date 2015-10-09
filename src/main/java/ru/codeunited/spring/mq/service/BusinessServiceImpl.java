@@ -17,6 +17,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public BusinessResponse processRequest(BusinessRequest request) {
         log.info(BusinessService.class.getSimpleName() + " got message [" + request.getPayload() + "]");
-        return new BusinessResponse("All right!");
+        Long longValue = Long.valueOf(request.getPayload());
+        return new BusinessResponse("All right! RQ [" + longValue + "]");
     }
 }

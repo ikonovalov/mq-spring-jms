@@ -44,8 +44,9 @@ public class MQMessageListener implements MessageListener {
                 replyIfRequired(message, "We don't handle messages other then TextMessage.");
             }
 
-        } catch (JMSException e) {
+        } catch (Exception e) {
             LOG.severe(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 

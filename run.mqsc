@@ -1,0 +1,15 @@
+** create your personal svrconn type channel
+DEFINE CHANNEL(JVM.DEF.SVRCONN) CHLTYPE(SVRCONN) TRPTYPE(TCP);
+
+** setup channel auth
+SET CHLAUTH(JVM.DEF.*) TYPE(BLOCKUSER) USERLIST('nobody');
+
+** refresh security cache
+REFRESH SECURITY(*);
+
+DEFILE QLOCAL('JMS.SMPL.BUSN.REQ.BK');
+DEFILE QLOCAL('JMS.SMPL.BUSN.REQ')
+            MAXDEPTH (100) +
+            BOQNAME('JMS.SMPL.BUSN.REQ.BK') +
+            BOTHRESH(2);
+DEFILE QLOCAL('JMS.SMPL.BUSN.RESP');
