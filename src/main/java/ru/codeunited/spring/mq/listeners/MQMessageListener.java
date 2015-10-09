@@ -1,16 +1,12 @@
-package ru.codeunited.spring.mq;
+package ru.codeunited.spring.mq.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 import ru.codeunited.spring.mq.service.BusinessRequest;
 import ru.codeunited.spring.mq.service.BusinessResponse;
 import ru.codeunited.spring.mq.service.BusinessService;
 
 import javax.jms.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 

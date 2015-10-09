@@ -1,4 +1,4 @@
-package ru.codeunited.spring.mq;
+package ru.codeunited.spring.mq.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
