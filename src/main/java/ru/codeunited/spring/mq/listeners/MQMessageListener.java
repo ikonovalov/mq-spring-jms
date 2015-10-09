@@ -43,6 +43,4 @@ public class MQMessageListener extends AbstractMessageListener {
             throw new RuntimeException(e);
         }
     }
-
-
 }
