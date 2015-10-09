@@ -1,4 +1,4 @@
-package ru.codeunited.spring.mq.examples;
+package ru.codeunited.spring.mq;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -19,6 +19,8 @@ public class Runner {
 
             {
                 sender = context.getBean(MQMessageSender.class);
+                sender.setDestinationQueue  ("JMS.SMPL.BUSN.REQ.TX");
+                sender.setReplyToQueue      ("JMS.SMPL.BUSN.RESP");
             }
 
             @Override

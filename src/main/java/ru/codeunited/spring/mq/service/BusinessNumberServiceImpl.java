@@ -10,9 +10,9 @@ import java.util.logging.Logger;
  * Created by ikonovalov on 09.10.15.
  */
 @Service
-public class BusinessServiceImpl implements BusinessService {
+public class BusinessNumberServiceImpl implements BusinessService {
 
-    private Logger log = Logger.getLogger(BusinessServiceImpl.class.getName());
+    private Logger log = Logger.getLogger(BusinessNumberServiceImpl.class.getName());
 
     @Override
     public BusinessResponse processRequest(BusinessRequest request) {

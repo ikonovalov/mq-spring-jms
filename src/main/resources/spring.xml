@@ -62,19 +62,20 @@
             p:receiveTimeout="10000">
     </bean>
 
-    <bean id="businessServiceAsyncTransport" class="ru.codeunited.spring.mq.examples.MQMessageListener"/>
-
-    <bean id="messageSender" class="ru.codeunited.spring.mq.examples.MQMessageSender"
-            p:destinationQueue="${queue.request}"
-            p:replyToQueue="${queue.reply}">
-    </bean>
-
     <jms:listener-container
             container-type="default"
             connection-factory="jmsQueueCachingConnectionFactorySecured"
             concurrency="3-5"
             acknowledge="transacted">
-        <jms:listener destination="${queue.request}" ref="businessServiceAsyncTransport"/>
+        <jms:listener destination="${queue.request.tx}" ref="MQMessageListener"/>
+    </jms:listener-container>
+
+    <jms:listener-container
+            container-type="default"
+            connection-factory="jmsQueueCachingConnectionFactorySecured"
+            concurrency="2"
+            acknowledge="client">
+        <jms:listener destination="${queue.request.ack}" ref="MQMessageACKListener"/>
     </jms:listener-container>
 
 
