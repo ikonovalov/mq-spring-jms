@@ -1,11 +1,12 @@
 package ru.codeunited.spring.mq.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
+import ru.codeunited.spring.mq.sender.MQMessageSender;
+import ru.codeunited.spring.mq.sender.MessageSender;
 
 import javax.jms.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -22,27 +23,21 @@ public abstract class AbstractMessageListener implements MessageListener {
     @Autowired
     protected JmsTemplate jmsTemplate;
 
+    @Autowired
+    private MessageSender sender;
+
     public Logger getLogger() {
         return LOG;
     }
 
-    protected void replyIfRequired(final Message request, final String messageBody) throws JMSException {
-        final Destination replyTo = request.getJMSReplyTo();
-        if (replyTo != null) { // quite eating messages without JMSReplyTo
-            final AtomicReference<TextMessage> responseRef = new AtomicReference<>();
-            jmsTemplate.send(replyTo, new MessageCreator() {
-                @Override
-                public Message createMessage(Session session) throws JMSException {
-                    final TextMessage response = session.createTextMessage();
-                    response.setJMSCorrelationID(request.getJMSMessageID());
-                    response.setText("Ok");
-                    responseRef.set(response);
-                    return response;
-                }
-            });
-            getLogger().info(format("Sent reply for %s with MessageId=%s", request.getJMSMessageID(), responseRef.get().getJMSMessageID()));
-        } else {
-            getLogger().info(format("Reply not required for %s", request.getJMSMessageID()));
+    protected void replyIfRequired(final Message request, final String messageBody){
+        Queue replyTo = null;
+        try {
+            replyTo = (Queue) request.getJMSReplyTo();
+            sender.send(messageBody, replyTo.getQueueName());
+
+        } catch (JMSException e) {
+            getLogger().severe("Can't send reply: " + e.getMessage());
         }
     }
 

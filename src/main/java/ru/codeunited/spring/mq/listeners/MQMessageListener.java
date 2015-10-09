@@ -17,7 +17,7 @@ import static java.lang.String.format;
 @Component
 public class MQMessageListener extends AbstractMessageListener {
 
-    @Autowired
+    @Autowired /* this is your's really business */
     private BusinessService businessService;
 
     @Override
@@ -32,10 +32,13 @@ public class MQMessageListener extends AbstractMessageListener {
 
                 replyIfRequired(message, response.getPayload());
             } else {
-                replyIfRequired(message, "We don't handle messages other then TextMessage.");
+
             }
 
-        } catch (Exception e) {
+        } catch (ClassCastException cce) {
+            replyIfRequired(message, "We don't handle messages other then TextMessage.");
+        }
+        catch (Exception e) {
             getLogger().severe(e.getMessage());
             throw new RuntimeException(e);
         }

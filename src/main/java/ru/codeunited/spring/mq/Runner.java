@@ -1,6 +1,7 @@
 package ru.codeunited.spring.mq;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.codeunited.spring.mq.sender.MQMessageSender;
 
 import javax.jms.JMSException;
 
@@ -13,24 +14,14 @@ public class Runner {
         final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         context.registerShutdownHook();
 
-        new Thread(new Runnable() {
+        String destinationQueue = "JMS.SMPL.BUSN.REQ.TX";
+        String replyToQueue = "JMS.SMPL.BUSN.RESP";
+        MQMessageSender sender = context.getBean(MQMessageSender.class);
 
-            private MQMessageSender sender;
-
-            {
-                sender = context.getBean(MQMessageSender.class);
-                sender.setDestinationQueue  ("JMS.SMPL.BUSN.REQ.TX");
-                sender.setReplyToQueue      ("JMS.SMPL.BUSN.RESP");
-            }
-
-            @Override
-            public void run() {
-                int count = 2;
-                while(count-->0) {
-                    sender.send(String.valueOf(System.nanoTime()));
-                }
-            }
-        }).start();
+        int count = 5;
+        while (count-- > 0) {
+            sender.send(String.valueOf(System.nanoTime()), destinationQueue, replyToQueue);
+        }
 
     }
 
