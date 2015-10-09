@@ -3,6 +3,9 @@ package ru.codeunited.spring.mq.examples;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import ru.codeunited.spring.mq.service.BusinessRequest;
+import ru.codeunited.spring.mq.service.BusinessResponse;
+import ru.codeunited.spring.mq.service.BusinessService;
 
 import javax.jms.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -11,6 +14,7 @@ import java.util.logging.Logger;
 import static java.lang.String.format;
 
 /**
+ * Transport front-side.
  * Created by Igor on 2014.07.31.
  */
 public class MQMessageListener implements MessageListener {
@@ -20,58 +24,67 @@ public class MQMessageListener implements MessageListener {
     @Autowired
     private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private BusinessService businessService;
+
     @Override
     public void onMessage(Message message) {
         try {
-            final String messageId = message.getJMSMessageID();
-            LOG.info(
-                    format(
-                            "\n%s got message %s\nType: %s",
-                            Thread.currentThread().getName(),
-                            messageId,
-                            message.getClass().getName()
-                    )
-            );
+            logMessage(message);
 
             if (isTextMessage(message)) {
                 // Process text message
-                final TextMessage textMessage = (TextMessage) message;
-                final String payload = textMessage.getText();
+                String payload = ((TextMessage) message).getText();
 
-                LOG.info(format("\nPayload:\n>%s...<", payload.substring(0,payload.length() > 50 ? 50 : payload.length())));
+                BusinessResponse response = businessService.processRequest(new BusinessRequest(payload));
 
-                // ready for reply
-                final Destination replyTo = message.getJMSReplyTo();
-                if (replyTo == null) { // quite eating messages without JMSReplyTo
-                    LOG.warning(format("Message %s comes without JMSReplyTo", messageId));
-                } else {
-                    LOG.info("Reply to " + replyTo);
-                    final AtomicReference<TextMessage> reposentRef = new AtomicReference<TextMessage>();
-                    jmsTemplate.send(replyTo, new MessageCreator() {
-                        @Override
-                        public Message createMessage(Session session) throws JMSException {
-                            final TextMessage response = session.createTextMessage();
-                            response.setJMSCorrelationID(messageId);
-                            response.setText("Ok");
-                            reposentRef.set(response);
-                            return response;
-                        }
-                    });
-                    LOG.info(format("Sent reply for %s with MessageId=%s", messageId, reposentRef.get().getJMSMessageID()));
-                }
+                replyIfRequired(message, response.getPayload());
+
             } else {
-                final String wrongTypeMessage = "We don't handle messages other then TextMessage.";
-                LOG.warning(wrongTypeMessage);
-                throw new JMSException(wrongTypeMessage);
+                replyIfRequired(message, "We don't handle messages other then TextMessage.");
             }
 
         } catch (JMSException e) {
             LOG.severe(e.getMessage());
-            // and put to DLQ or whatever...
+        }
+    }
+
+    private void replyIfRequired(final Message message, final String messageBody) throws JMSException {
+        final Destination replyTo = message.getJMSReplyTo();
+        if (replyTo != null) { // quite eating messages without JMSReplyTo
+            final AtomicReference<TextMessage> responseRef = new AtomicReference<TextMessage>();
+            jmsTemplate.send(replyTo, new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    final TextMessage response = session.createTextMessage();
+                    response.setJMSCorrelationID(message.getJMSMessageID());
+                    response.setText("Ok");
+                    responseRef.set(response);
+                    return response;
+                }
+            });
+            LOG.info(format("Sent reply for %s with MessageId=%s", message.getJMSMessageID(), responseRef.get().getJMSMessageID()));
+        } else {
+            LOG.info(format("Reply not required for %s", message.getJMSMessageID()));
         }
     }
 
     public boolean isTextMessage(Message message) {
         return message instanceof TextMessage;
+    }
+
+    public void logMessage(Message message) {
+        try {
+            LOG.info(
+                    format(
+                            "\n%s got message %s\nType: %s",
+                            Thread.currentThread().getName(),
+                            message.getJMSMessageID(),
+                            message.getClass().getName()
+                    )
+            );
+        } catch (JMSException e) {
+           LOG.severe(e.getMessage());
+        }
     }
 }

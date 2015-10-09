@@ -10,6 +10,7 @@
        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
 
     <context:annotation-config />
+    <context:component-scan base-package="ru.codeunited"/>
     <context:property-placeholder location="classpath:wmq.properties" ignore-unresolvable="true"/>
 
     <!--
@@ -44,7 +45,7 @@
     </bean>
     <bean id="jmsQueueConnectionFactorySecured" class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
           p:targetConnectionFactory-ref="mqClientConnectionFactory"
-          p:username="Igor@localhost"
+          p:username="ikonovalov"
           p:password="!#===(*_*)====#! Like? Ok, put your password here.">
     </bean>
     <bean id="jmsQueueCachingConnectionFactorySecured" class="org.springframework.jms.connection.CachingConnectionFactory"
@@ -61,7 +62,7 @@
             p:receiveTimeout="10000">
     </bean>
 
-    <bean id="mqListener" class="ru.codeunited.spring.mq.examples.MQMessageListener"/>
+    <bean id="businessServiceAsyncTransport" class="ru.codeunited.spring.mq.examples.MQMessageListener"/>
 
     <bean id="messageSender" class="ru.codeunited.spring.mq.examples.MQMessageSender"
             p:destinationQueue="${queue.request}"
@@ -73,6 +74,6 @@
             connection-factory="jmsQueueCachingConnectionFactorySecured"
             concurrency="3-5"
             acknowledge="transacted">
-        <jms:listener destination="${wmq.queue.request}" ref="mqListener"/>
+        <jms:listener destination="${queue.request}" ref="businessServiceAsyncTransport"/>
     </jms:listener-container>
 </beans>
