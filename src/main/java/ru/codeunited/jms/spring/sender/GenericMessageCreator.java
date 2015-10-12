@@ -1,4 +1,4 @@
-package ru.codeunited.spring.mq.sender;
+package ru.codeunited.jms.spring.sender;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;

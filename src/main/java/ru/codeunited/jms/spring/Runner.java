@@ -1,7 +1,7 @@
-package ru.codeunited.spring.mq;
+package ru.codeunited.jms.spring;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.codeunited.spring.mq.sender.MQMessageSender;
+import ru.codeunited.jms.spring.sender.MQMessageSender;
 
 import javax.jms.JMSException;
 

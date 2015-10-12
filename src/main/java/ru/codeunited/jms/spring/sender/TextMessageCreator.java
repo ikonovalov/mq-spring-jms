@@ -1,4 +1,4 @@
-package ru.codeunited.spring.mq.sender;
+package ru.codeunited.jms.spring.sender;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;

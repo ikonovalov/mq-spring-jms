@@ -1,8 +1,8 @@
-package ru.codeunited.spring.mq.listeners;
+package ru.codeunited.jms.spring.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import ru.codeunited.spring.mq.sender.MessageSender;
+import ru.codeunited.jms.spring.sender.MessageSender;
 
 import javax.jms.*;
 import java.util.logging.Logger;
@@ -16,7 +16,7 @@ import static java.lang.String.format;
  */
 public abstract class AbstractMessageListener implements MessageListener {
 
-    private static final Logger LOG = Logger.getLogger(MQMessageListener.class.getName());
+    private static final Logger LOG = Logger.getLogger(MessageListener.class.getName());
 
     @Autowired
     protected JmsTemplate jmsTemplate;

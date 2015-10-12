@@ -1,4 +1,4 @@
-package ru.codeunited.spring.mq.sender;
+package ru.codeunited.jms.spring.sender;
 
 import javax.jms.Message;
 

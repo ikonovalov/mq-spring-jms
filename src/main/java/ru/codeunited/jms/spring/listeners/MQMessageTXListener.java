@@ -1,10 +1,10 @@
-package ru.codeunited.spring.mq.listeners;
+package ru.codeunited.jms.spring.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.codeunited.spring.mq.service.BusinessRequest;
-import ru.codeunited.spring.mq.service.BusinessResponse;
-import ru.codeunited.spring.mq.service.BusinessService;
+import ru.codeunited.jms.spring.service.BusinessRequest;
+import ru.codeunited.jms.spring.service.BusinessResponse;
+import ru.codeunited.jms.spring.service.BusinessService;
 
 import javax.jms.*;
 
@@ -13,7 +13,7 @@ import javax.jms.*;
  * Created by Igor on 2014.07.31.
  */
 @Component
-public class MQMessageListener extends AbstractMessageListener {
+public class MQMessageTXListener extends AbstractMessageListener {
 
     @Autowired /* this is your's really business */
     private BusinessService businessService;

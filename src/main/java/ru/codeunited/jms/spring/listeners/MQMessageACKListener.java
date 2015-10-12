@@ -1,4 +1,4 @@
-package ru.codeunited.spring.mq.listeners;
+package ru.codeunited.jms.spring.listeners;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.MessageCreator;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * Created by ikonovalov on 09.10.15.
  */
 @Component
-public class MQMessageACKListener extends MQMessageListener {
+public class MQMessageACKListener extends MQMessageTXListener {
 
     private static final Logger LOG = Logger.getLogger(MQMessageACKListener.class.getName());
 

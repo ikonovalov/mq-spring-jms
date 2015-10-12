@@ -9,8 +9,8 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
 
-    <context:annotation-config />
-    <context:component-scan base-package="ru.codeunited"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="ru.codeunited.jms.spring"/>
     <context:property-placeholder location="classpath:wmq.properties" ignore-unresolvable="true"/>
 
     <!--
@@ -22,11 +22,11 @@
 
     <!-- Use this factory only in BINDING mode -->
     <bean id="mqBindingConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
-            p:hostName="${wmq.qmgr.host}"
-            p:port="${wmq.qmgr.port}"
-            p:queueManager="${wmq.qmgr.name}"
-            p:transportType="0"
-            p:CCSID="${wmq.qmgr.ccid}">
+          p:hostName="${wmq.qmgr.host}"
+          p:port="${wmq.qmgr.port}"
+          p:queueManager="${wmq.qmgr.name}"
+          p:transportType="0"
+          p:CCSID="${wmq.qmgr.ccid}">
     </bean>
     <!-- Use this factory in CLIENT mode -->
     <bean id="mqClientConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
@@ -43,13 +43,16 @@
             p:targetConnectionFactory-ref="mqBindingConnectionFactory"
             p:reconnectOnException="true"> &lt;!&ndash; non-container's use &ndash;&gt;
     </bean>-->
-    <bean id="jmsQueueConnectionFactorySecured" class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
+    <bean id="jmsQueueConnectionFactorySecured"
+          class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
           p:targetConnectionFactory-ref="mqClientConnectionFactory"
           p:username="${wmq.qmgr.username}"
           p:password="!#===(*_*)====#! Like? Ok, put your password here.">
     </bean>
-    <bean id="jmsQueueCachingConnectionFactorySecured" class="org.springframework.jms.connection.CachingConnectionFactory"
-          p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured">
+    <bean id="jmsQueueCachingConnectionFactorySecured"
+          class="org.springframework.jms.connection.CachingConnectionFactory"
+          p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured"
+          p:sessionCacheSize="10">
     </bean>
 
     <!-- JMS Destination Resolver -->
@@ -57,9 +60,9 @@
 
     <!-- JMS Queue Template -->
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate"
-            p:connectionFactory-ref="jmsQueueCachingConnectionFactorySecured"
-            p:destinationResolver-ref="jmsDestinationResolver"
-            p:receiveTimeout="10000">
+          p:connectionFactory-ref="jmsQueueCachingConnectionFactorySecured"
+          p:destinationResolver-ref="jmsDestinationResolver"
+          p:receiveTimeout="10000">
     </bean>
 
     <!-- local transacted(TX) listener container -->
@@ -68,7 +71,7 @@
             connection-factory="jmsQueueCachingConnectionFactorySecured"
             concurrency="3-5"
             acknowledge="transacted">
-        <jms:listener destination="${queue.request.tx}" ref="MQMessageListener"/>
+        <jms:listener destination="${queue.request.tx}" ref="MQMessageTXListener"/>
     </jms:listener-container>
 
     <!-- client acknowledge(ACK) listener container -->
