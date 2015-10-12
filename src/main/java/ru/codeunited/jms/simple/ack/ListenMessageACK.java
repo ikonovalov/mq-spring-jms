@@ -1,5 +1,6 @@
 package ru.codeunited.jms.simple.ack;
 
+import org.springframework.jms.core.MessageCreator;
 import ru.codeunited.jms.service.BusinessNumberServiceImpl;
 import ru.codeunited.jms.service.BusinessRequest;
 import ru.codeunited.jms.service.BusinessResponse;
@@ -30,11 +31,14 @@ public class ListenMessageACK {
         Queue queue = resolveQueue("JMS.SMPL.BUSN.REQ.ACK", session);
         MessageConsumer consumer = session.createConsumer(queue);
 
-        consumer.setMessageListener(new LogMessageListenerACK(service, session));
+        consumer.setMessageListener(
+                new LogMessageListenerACK(service, session)
+                        .setBackoutQueue("JMS.SMPL.BUSN.REQ.BK")
+        );
 
         connection.start();     // !DON'T FORGET!
 
-        Thread.currentThread().join(1000L);
+        Thread.currentThread().join(30000L);
 
         // release resources
         connection.stop();
@@ -50,9 +54,16 @@ public class ListenMessageACK {
 
         private final Session session;
 
+        private Queue backoutQueue;
+
         private LogMessageListenerACK(BusinessService service, Session session) {
             this.service = service;
             this.session = session;
+        }
+
+        public LogMessageListenerACK setBackoutQueue(String backoutQueueName) throws JMSException {
+            this.backoutQueue = resolveQueue(backoutQueueName, session);
+            return this;
         }
 
         @Override
@@ -67,17 +78,36 @@ public class ListenMessageACK {
 
                 message.acknowledge();
                 LOG.info(String.format("Message [%s] handled", messageID));
-            } catch (JMSException e) {
+            } catch (Exception e) {
                 try {
                     String messageID = message.getJMSMessageID();
                     LOG.severe(messageID + " got error: " + e.toString());
-                    session.recover();
-                    LOG.warning("Session recovered");
+
+                    // recover or backout
+                    if (message.getJMSRedelivered()) {
+                        moveToBackout(message);
+                        message.acknowledge();
+                    } else {
+                        session.recover();
+                        LOG.warning("Session recovered");
+                    }
+
                 } catch (JMSException e1) {
                     LOG.severe(e1.getMessage());
-                    throw new RuntimeException(e1);
                 }
-                throw new RuntimeException(e);
+            }
+        }
+
+        public void moveToBackout(final Message message) {
+            try {
+                if (backoutQueue != null) {
+                    MessageProducer producer = session.createProducer(backoutQueue);
+                    producer.send(message);
+                    producer.close();
+                    LOG.warning("Message " + message.getJMSMessageID() + " moved to backout " + backoutQueue.getQueueName());
+                }
+            } catch (JMSException e) {
+                LOG.severe(e.getMessage());
             }
         }
     }
