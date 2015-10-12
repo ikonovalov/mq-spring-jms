@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 @Component
 public class MQMessageACKListener extends MQMessageTXListener {
 
-    private static final Logger LOG = Logger.getLogger(MQMessageACKListener.class.getName());
-
     private String backoutQueue;
 
     public String getBackoutQueue() {
@@ -36,11 +34,11 @@ public class MQMessageACKListener extends MQMessageTXListener {
         try {
             redelivered = message.getJMSRedelivered();
             if (redelivered) {
-                LOG.warning("Message is redelivered! [" + message.getJMSMessageID() + "]");
+                getLogger().warning("Message is redelivered! [" + message.getJMSMessageID() + "]");
             }
             super.onMessage(message);
         } catch (Exception e) {
-            LOG.severe(e.getMessage());
+            getLogger().severe(e.getMessage());
             if (redelivered) {                  // redelivery failed? move to trash
                 moveToBackout(message);
             } else {                            // give it only one chance
@@ -60,11 +58,11 @@ public class MQMessageACKListener extends MQMessageTXListener {
                         return message;
                     }
                 });
-                LOG.info("Message is backed out [" + originalMessageID + "] ");
+                getLogger().info("Message is backed out [" + originalMessageID + "] ");
 
             }
         } catch (JMSException e) {
-            LOG.severe(e.getMessage());
+            getLogger().severe(e.getMessage());
         }
     }
 }

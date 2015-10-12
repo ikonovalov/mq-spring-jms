@@ -23,12 +23,12 @@ public class ReceiveMessageACK {
         Queue queue = resolveQueue("JMS.SMPL.BUSN.REQ.ACK", session);
         MessageConsumer consumer = session.createConsumer(queue);
 
-        connection.start();     // !DON'T FORGET!
+        connection.start();         // !DON'T FORGET!
 
         TextMessage message = (TextMessage) consumer.receive(1000L); // or receive(), or receiveNoWait
-        if (message != null) { // null - queue is empty.
+        if (message != null) {      // null - queue is empty.
             LOG.info("Message: " + message.getText());
-            message.acknowledge(); // we use CLIENT_ACKNOWLEDGE
+            message.acknowledge();  // we use CLIENT_ACKNOWLEDGE
         }
 
         // release resources
