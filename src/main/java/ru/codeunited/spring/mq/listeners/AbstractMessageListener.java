@@ -39,10 +39,6 @@ public abstract class AbstractMessageListener implements MessageListener {
         }
     }
 
-    protected boolean isTextMessage(Message message) {
-        return message instanceof TextMessage;
-    }
-
     public void logMessage(Message message) {
         try {
             getLogger().info(
