@@ -2,9 +2,9 @@ package ru.codeunited.jms.spring.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.codeunited.jms.spring.service.BusinessRequest;
-import ru.codeunited.jms.spring.service.BusinessResponse;
-import ru.codeunited.jms.spring.service.BusinessService;
+import ru.codeunited.jms.service.BusinessRequest;
+import ru.codeunited.jms.service.BusinessResponse;
+import ru.codeunited.jms.service.BusinessService;
 
 import javax.jms.*;
 

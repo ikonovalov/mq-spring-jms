@@ -1,4 +1,4 @@
-package ru.codeunited.jms.spring.service;
+package ru.codeunited.jms.service;
 
 /**
  * This is a business service. Like many other.

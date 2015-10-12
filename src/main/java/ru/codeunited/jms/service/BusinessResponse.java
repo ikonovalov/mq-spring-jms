@@ -1,15 +1,15 @@
-package ru.codeunited.jms.spring.service;
+package ru.codeunited.jms.service;
 
 /**
  * codeunited.ru
  * konovalov84@gmail.com
  * Created by ikonovalov on 09.10.15.
  */
-public final class BusinessRequest {
+public final class BusinessResponse {
 
     private final String payload;
 
-    public BusinessRequest(String payload) {
+    public BusinessResponse(String payload) {
         this.payload = payload;
     }
 

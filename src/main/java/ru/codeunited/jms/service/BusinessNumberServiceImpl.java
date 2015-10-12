@@ -1,4 +1,4 @@
-package ru.codeunited.jms.spring.service;
+package ru.codeunited.jms.service;
 
 import org.springframework.stereotype.Service;
 
