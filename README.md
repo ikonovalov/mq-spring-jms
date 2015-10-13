@@ -10,5 +10,3 @@ Package structure:
 + ru.codeunited.jms.spring  - JMS with Spring (with TX and ACK)
 
 **GPL** licence.
-
-*... and sorry for my english*
