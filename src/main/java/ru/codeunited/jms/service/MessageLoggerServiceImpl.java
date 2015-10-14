@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.TextMessage;
 
 /**
  * codeunited.ru
@@ -15,12 +16,23 @@ import javax.jms.Message;
 @Service
 public class MessageLoggerServiceImpl implements MessageLoggerService {
 
-    private Logger logger = LoggerFactory.getLogger(MessageLoggerServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageLoggerServiceImpl.class);
 
     @Override
     public void incoming(Message message) {
         try {
-            logger.info("Incoming %s message. ID=%s", message.getClass().getSimpleName(), message.getJMSMessageID());
+            logger.info("Incoming {} message. ID={}", message.getClass().getSimpleName(), message.getJMSMessageID());
+        } catch (JMSException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    @Override
+    public void incoming(TextMessage message) {
+        incoming((Message) message);
+
+        try {
+            logger.debug(message.getText());
         } catch (JMSException e) {
             logger.warn(e.getMessage());
         }
@@ -29,7 +41,7 @@ public class MessageLoggerServiceImpl implements MessageLoggerService {
     @Override
     public void error(Message message, Exception e) {
         try {
-            logger.error("Message ID=%s cause error: %s", message.getJMSMessageID(), e.getMessage());
+            logger.error("Message ID={} cause error: {}", message.getJMSMessageID(), e.getMessage());
         } catch (JMSException ejms) {
             logger.warn(ejms.getMessage());
         }
@@ -38,7 +50,34 @@ public class MessageLoggerServiceImpl implements MessageLoggerService {
     @Override
     public void handled(Message message) {
         try {
-            logger.info("Message ID=%s handled", message.getJMSMessageID());
+            logger.info("Message ID={} handled", message.getJMSMessageID());
+        } catch (JMSException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    Integer getRedeliveryCount(Message message) {
+        try {
+            return message.getIntProperty("JMSXDeliveryCount");
+        } catch (JMSException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void rollback(Message message) {
+        try {
+
+            logger.info("Message {} is rolled back. Redelivery count {}", message.getJMSMessageID(), getRedeliveryCount(message));
+        } catch (JMSException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    @Override
+    public void backout(String backoutQueue, String originalMessageId, Message message) {
+        try {
+            logger.warn("Message ID={} going to backout to [{}] with {}", originalMessageId, backoutQueue, message.getJMSMessageID());
         } catch (JMSException e) {
             logger.warn(e.getMessage());
         }

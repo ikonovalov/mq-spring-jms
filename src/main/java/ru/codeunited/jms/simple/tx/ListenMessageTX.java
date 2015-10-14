@@ -1,13 +1,10 @@
 package ru.codeunited.jms.simple.tx;
 
-import ru.codeunited.jms.service.BusinessNumberServiceImpl;
-import ru.codeunited.jms.service.BusinessRequest;
-import ru.codeunited.jms.service.BusinessResponse;
-import ru.codeunited.jms.service.BusinessService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.codeunited.jms.service.*;
 
 import javax.jms.*;
-
-import java.util.logging.Logger;
 
 import static ru.codeunited.jms.simple.JmsHelper.getConnectionFactory;
 import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
@@ -19,24 +16,27 @@ import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
  */
 public class ListenMessageTX {
 
-    private static final Logger LOG = Logger.getLogger(ListenMessageTX.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(ListenMessageTX.class);
 
     private static final BusinessService service = new BusinessNumberServiceImpl();
+
+    private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
+
+    private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.TX";
 
     public static void main(String[] args) throws JMSException, InterruptedException {
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connectionFactory.createConnection("ikonovalov", "");
         final Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
 
-        Queue queue = resolveQueue("JMS.SMPL.BUSN.REQ.ACK", session);
+        Queue queue = resolveQueue(TARGET_QUEUE, session);
 
         MessageConsumer consumer = session.createConsumer(queue);
-        consumer.setMessageListener(new LogMessageListenerTX(session, service));
+        consumer.setMessageListener(new LogMessageListenerTX(session, service, logService));
 
         connection.start();     // !DON'T FORGET!
 
         Thread.currentThread().join(10000L); // Consume only 10 second
-        //session.commit();
 
         // release resources
         connection.stop();
@@ -52,33 +52,34 @@ public class ListenMessageTX {
 
         private final BusinessService service;
 
-        public LogMessageListenerTX(Session session, BusinessService service) {
+        private final MessageLoggerService loggerService;
+
+        public LogMessageListenerTX(Session session, BusinessService service, MessageLoggerService loggerService) {
             this.session = session;
             this.service = service;
+            this.loggerService = loggerService;
         }
 
         @Override
         public void onMessage(Message message) {
             TextMessage textMessage = (TextMessage) message;
+            loggerService.incoming(message);
             try {
-                String messageID = message.getJMSMessageID();
-                LOG.info(String.format("Incoming message %s", messageID));
 
                 BusinessResponse response = service.processRequest(new BusinessRequest(textMessage.getText()));
 
-                session.commit(); // maybe AOP is better?
-                LOG.info(String.format("Message [%s] handled", messageID));
-            } catch (JMSException e) {
+                session.commit();
+                loggerService.handled(message);
+
+            } catch (Exception e) {
+                loggerService.error(message, e);
+
                 try {
-                    String messageID = message.getJMSMessageID();
-                    LOG.severe(messageID + " got error: " + e.toString());
                     session.rollback();
-                    LOG.warning(String.format("Message [%] rolled back", message.getJMSMessageID()));
+                    loggerService.rollback(message);
                 } catch (JMSException e1) {
-                    LOG.severe(e1.getMessage());
-                    throw new RuntimeException(e1);
+                    LOG.error(e1.getMessage());
                 }
-                throw new RuntimeException(e);
             }
         }
     }

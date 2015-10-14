@@ -29,7 +29,7 @@ public class MQMessageTXListener extends AbstractMessageListener {
         } catch (ClassCastException cce) {
             replyIfRequired(message, "We don't handle messages other then TextMessage.");
         } catch (Exception e) {
-            getLogger().severe(e.getMessage());
+            getLogger().error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

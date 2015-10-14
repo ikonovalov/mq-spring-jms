@@ -34,11 +34,11 @@ public class MQMessageACKListener extends MQMessageTXListener {
         try {
             redelivered = message.getJMSRedelivered();
             if (redelivered) {
-                getLogger().warning("Message is redelivered! [" + message.getJMSMessageID() + "]");
+                getLogger().error("Message is redelivered! [{}]", message.getJMSMessageID());
             }
             super.onMessage(message);
         } catch (Exception e) {
-            getLogger().severe(e.getMessage());
+            getLogger().error(e.getMessage());
             if (redelivered) {                  // redelivery failed? move to trash
                 moveToBackout(message);
             } else {                            // give it only one chance
@@ -58,11 +58,11 @@ public class MQMessageACKListener extends MQMessageTXListener {
                         return message;
                     }
                 });
-                getLogger().info("Message is backed out [" + originalMessageID + "] ");
+                getLogger().info("Message is backed out [{}]", originalMessageID);
 
             }
         } catch (JMSException e) {
-            getLogger().severe(e.getMessage());
+            getLogger().error(e.getMessage());
         }
     }
 }

@@ -1,6 +1,7 @@
 package ru.codeunited.jms.service;
 
 import javax.jms.Message;
+import javax.jms.TextMessage;
 
 /**
  * codeunited.ru
@@ -11,7 +12,13 @@ public interface MessageLoggerService {
 
     void incoming(Message message);
 
+    void incoming(TextMessage message);
+
     void error(Message message, Exception e);
 
     void handled(Message message);
+
+    void rollback(Message message);
+
+    void backout(String backoutQueue, String messageId, Message message);
 }

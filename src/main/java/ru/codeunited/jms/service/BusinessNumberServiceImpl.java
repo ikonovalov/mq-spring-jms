@@ -1,8 +1,8 @@
 package ru.codeunited.jms.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.logging.Logger;
 
 /**
  * codeunited.ru
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @Service
 public class BusinessNumberServiceImpl implements BusinessService {
 
-    private final Logger log = Logger.getLogger(BusinessNumberServiceImpl.class.getName());
+    private final Logger log = LoggerFactory.getLogger(BusinessNumberServiceImpl.class);
 
     @Override
     public BusinessResponse processRequest(BusinessRequest request) {

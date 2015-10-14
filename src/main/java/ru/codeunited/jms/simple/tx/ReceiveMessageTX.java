@@ -1,8 +1,10 @@
 package ru.codeunited.jms.simple.tx;
 
-import javax.jms.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.codeunited.jms.service.*;
 
-import java.util.logging.Logger;
+import javax.jms.*;
 
 import static ru.codeunited.jms.simple.JmsHelper.getConnectionFactory;
 import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
@@ -14,7 +16,13 @@ import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
  */
 public class ReceiveMessageTX {
 
-    private static final Logger LOG = Logger.getLogger(ReceiveMessageTX.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiveMessageTX.class);
+
+    private static final BusinessService service = new BusinessNumberServiceImpl();
+
+    private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
+
+    private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.TX";
 
     public static void main(String[] args) throws JMSException {
         ConnectionFactory connectionFactory = getConnectionFactory();
@@ -22,18 +30,26 @@ public class ReceiveMessageTX {
 
         // WORK UNIT START
         Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        Queue queue = resolveQueue("JMS.SMPL.BUSN.REQ.ACK", session);
+        Queue queue = resolveQueue(TARGET_QUEUE, session);
         MessageConsumer consumer = session.createConsumer(queue);
 
         connection.start();
 
-        for (int z = 0; z < 10; z++) { // consume 10 messages in transaction
-            TextMessage message = (TextMessage) consumer.receive(1000L);
-            if (message != null) { // null - queue is empty.
-                LOG.info("Message: " + message.getText());
+        TextMessage message = (TextMessage) consumer.receive(1000L);
+        if (message != null) {
+            logService.incoming(message);
+
+            try {
+                BusinessResponse response = service.processRequest(new BusinessRequest(message.getText()));
+
+                session.commit(); // We use transacted session
+                logService.handled(message);
+            } catch (Exception e) {
+                logService.error(message, e);
+                session.rollback();
+                logService.rollback(message);
             }
         }
-        session.commit(); // We use transacted session
         // WORK UNIT END
 
         // release resources
