@@ -11,6 +11,7 @@
         <mq.home>/opt/mqm</mq.home>
         <mq.java.lib>${mq.home}/java/lib</mq.java.lib>
         <mq.version>7.5.0</mq.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
