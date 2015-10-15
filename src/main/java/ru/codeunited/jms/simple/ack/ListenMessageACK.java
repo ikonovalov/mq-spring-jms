@@ -26,6 +26,8 @@ public class ListenMessageACK {
 
     private static final String BACKOUT_QUEUE = "JMS.SMPL.BUSN.REQ.BK";
 
+    private static final long SHUTDOWN_TIMEOUT = 10000L;
+
     public static void main(String[] args) throws JMSException, InterruptedException {
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connectionFactory.createConnection("ikonovalov", "");
@@ -40,7 +42,7 @@ public class ListenMessageACK {
 
         connection.start();     // !DON'T FORGET!
 
-        Thread.currentThread().join(10000L);
+        Thread.currentThread().join(SHUTDOWN_TIMEOUT);
 
         // release resources
         connection.stop();

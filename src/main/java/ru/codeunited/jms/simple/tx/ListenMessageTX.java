@@ -24,6 +24,8 @@ public class ListenMessageTX {
 
     private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.TX";
 
+    private static final long SHUTDOWN_TIMEOUT = 10000L;
+
     public static void main(String[] args) throws JMSException, InterruptedException {
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connectionFactory.createConnection("ikonovalov", "");
@@ -36,7 +38,7 @@ public class ListenMessageTX {
 
         connection.start();     // !DON'T FORGET!
 
-        Thread.currentThread().join(10000L); // Consume only 10 second
+        Thread.currentThread().join(SHUTDOWN_TIMEOUT); // Consume only 10 second
 
         // release resources
         connection.stop();

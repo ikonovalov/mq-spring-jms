@@ -24,6 +24,8 @@ public class ReceiveMessageTX {
 
     private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.TX";
 
+    private static final long TIMEOUT = 1000L;
+
     public static void main(String[] args) throws JMSException {
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connectionFactory.createConnection("ikonovalov", "");
@@ -35,8 +37,8 @@ public class ReceiveMessageTX {
 
         connection.start();
 
-        TextMessage message = (TextMessage) consumer.receive(1000L);
-        if (message != null) {
+        TextMessage message = (TextMessage) consumer.receive(TIMEOUT);
+        while (message != null) {
             logService.incoming(message);
 
             try {
@@ -49,6 +51,7 @@ public class ReceiveMessageTX {
                 session.rollback();
                 logService.rollback(message);
             }
+            message = (TextMessage) consumer.receive(TIMEOUT);
         }
         // WORK UNIT END
 
