@@ -6,6 +6,7 @@ import ru.codeunited.jms.service.*;
 
 import javax.jms.*;
 
+import static ru.codeunited.jms.simple.JmsHelper.copyMessage;
 import static ru.codeunited.jms.simple.JmsHelper.getConnectionFactory;
 import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
 
@@ -91,7 +92,7 @@ public class ListenMessageACK {
 
                     // recover or backout
                     if (message.getJMSRedelivered()) {
-                        moveToBackout(message);
+                        moveToBackout(message, e);
                         message.acknowledge();
                         logService.backout(backoutQueue.getQueueName(), messageID, message);
                     } else {
@@ -105,11 +106,14 @@ public class ListenMessageACK {
             }
         }
 
-        public void moveToBackout(final Message message) {
+        public void moveToBackout(Message message, Exception exception) {
             try {
                 if (backoutQueue != null) {
                     MessageProducer producer = session.createProducer(backoutQueue);
-                    producer.send(message);
+                    Message messageCopy = copyMessage(session, message);
+                    messageCopy.setStringProperty("ERROR", exception.getMessage());
+
+                    producer.send(messageCopy);
                     producer.close();
                 }
             } catch (JMSException e) {

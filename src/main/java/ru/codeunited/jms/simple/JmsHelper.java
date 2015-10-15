@@ -2,9 +2,8 @@ package ru.codeunited.jms.simple;
 
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.Session;
+import javax.jms.*;
+import java.util.Enumeration;
 
 /**
  * codeunited.ru
@@ -26,5 +25,34 @@ public class JmsHelper {
 
     public static Queue resolveQueue(String name, Session session) throws JMSException {
         return session.createQueue(name);
+    }
+
+    public static TextMessage copyMessage(Session session, Message message) throws JMSException {
+        return copyMessage(session, (TextMessage) message);
+    }
+
+    public static TextMessage copyMessage(Session session, TextMessage message) throws JMSException {
+        TextMessage copy = session.createTextMessage();
+
+        // copy message body
+        copy.setText(message.getText());
+
+        // copy message properties
+        Enumeration<String> propertyNames = message.getPropertyNames();
+        while (propertyNames.hasMoreElements()) {
+            String propName = propertyNames.nextElement();
+            Object propValue = message.getObjectProperty(propName);
+            copy.setObjectProperty(propName, propValue);
+        }
+
+        // copy mqmd
+        copy.setJMSCorrelationID(message.getJMSCorrelationID());
+        copy.setJMSDeliveryMode(message.getJMSDeliveryMode());
+        copy.setJMSExpiration(message.getJMSExpiration());
+        copy.setJMSPriority(message.getJMSPriority());
+        copy.setJMSType(message.getJMSType());
+        copy.setJMSReplyTo(message.getJMSReplyTo());
+        // skip other parameters
+        return copy;
     }
 }
