@@ -111,7 +111,7 @@ public class ListenMessageACK {
                 if (backoutQueue != null) {
                     MessageProducer producer = session.createProducer(backoutQueue);
                     Message messageCopy = copyMessage(session, message);
-                    messageCopy.setStringProperty("ERROR", exception.getMessage());
+                    messageCopy.setStringProperty("Error", exception.getMessage());
 
                     producer.send(messageCopy);
                     producer.close();

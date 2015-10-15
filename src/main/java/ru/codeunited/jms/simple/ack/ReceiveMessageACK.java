@@ -76,7 +76,7 @@ public class ReceiveMessageACK {
         try {
             MessageProducer producer = session.createProducer(session.createQueue(backoutQueue));
             Message messageCopy = copyMessage(session, message);
-            messageCopy.setStringProperty("ERROR", exception.getMessage());
+            messageCopy.setStringProperty("Error", exception.getMessage());
             producer.send(messageCopy);
             producer.close();
 
