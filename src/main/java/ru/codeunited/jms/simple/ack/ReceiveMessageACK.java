@@ -26,6 +26,8 @@ public class ReceiveMessageACK {
 
     private static final String BACKOUT_QUEUE = "JMS.SMPL.BUSN.REQ.BK";
 
+    private static final long TIMEOUT = 1000L;
+
     public static void main(String[] args) throws JMSException {
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connectionFactory.createConnection("ikonovalov", "");
@@ -33,10 +35,9 @@ public class ReceiveMessageACK {
         Queue queue = resolveQueue(TARGET_QUEUE, session);
         MessageConsumer consumer = session.createConsumer(queue);
 
-        connection.start();         // !DON'T FORGET!
-
-        TextMessage message = (TextMessage) consumer.receive(1000L); // or receive(), or receiveNoWait
-        if (message != null) {      // null - queue is empty.
+        connection.start();             // !DON'T FORGET!
+        TextMessage message = (TextMessage) consumer.receive(TIMEOUT); // or receive(), or receiveNoWait
+        while (message != null) {       // null - queue is empty.
             logService.incoming(message);
             try {
                 /* it accepts numbers only. So, if you put alphabet it should throw exception */
@@ -58,6 +59,7 @@ public class ReceiveMessageACK {
                     LOG.warn("Session recovered");
                 }
             }
+            message = (TextMessage) consumer.receive(TIMEOUT);
         }
 
         // release resources
