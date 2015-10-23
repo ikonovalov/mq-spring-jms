@@ -13,23 +13,6 @@
     <context:component-scan base-package="ru.codeunited.jms.spring ru.codeunited.jms.service"/>
     <context:property-placeholder location="classpath:wmq.properties" ignore-unresolvable="true"/>
 
-    <!--
-    Main idea:
-        MQQueueConnectionFactory -> UserCredentialsConnectionFactoryAdapter -> ConnectionFactory
-    -->
-
-    <!-- WebSphere MQ Connection Factory -->
-
-    <!-- Use this factory only in BINDING mode -->
-    <bean id="mqBindingConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
-          p:hostName="${wmq.qmgr.host}"
-          p:queueManager="${wmq.qmgr.name}"
-          p:transportType="0"
-          p:channel="${wmq.qmgr.channel}">
-          p:CCSID="${wmq.qmgr.ccid}">
-    </bean>
-
-    <!-- Use this factory in CLIENT mode -->
     <bean id="mqClientConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory"
           p:connectionNameList="${wmq.qmgr.hosts}"
           p:clientReconnectTimeout="${wmq.qmgr.clientReconnectTimeout}"
@@ -42,13 +25,13 @@
         </property>
     </bean>
 
-    <!-- JMS Queue Connection Factory -->
     <bean id="jmsQueueConnectionFactorySecured"
           class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter"
           p:targetConnectionFactory-ref="mqClientConnectionFactory"
           p:username="${wmq.qmgr.username}"
           p:password="${wmq.qmgr.password}">
     </bean>
+
     <bean id="jmsQueueCachingConnectionFactorySecured"
           class="org.springframework.jms.connection.CachingConnectionFactory"
           p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured"
@@ -64,24 +47,6 @@
           p:destinationResolver-ref="jmsDestinationResolver"
           p:receiveTimeout="10000">
     </bean>
-
-    <!-- local transacted(TX) listener container -->
-    <jms:listener-container
-            container-type="default"
-            connection-factory="jmsQueueCachingConnectionFactorySecured"
-            concurrency="3-5"
-            acknowledge="transacted">
-        <jms:listener destination="${queue.request.tx}" ref="MQMessageTXListener"/>
-    </jms:listener-container>
-
-    <!-- client acknowledge(ACK) listener container -->
-    <jms:listener-container
-            container-type="default"
-            connection-factory="jmsQueueCachingConnectionFactorySecured"
-            concurrency="2"
-            acknowledge="client">
-        <jms:listener destination="${queue.request.ack}" ref="MQMessageACKListener"/>
-    </jms:listener-container>
 
 
 </beans>

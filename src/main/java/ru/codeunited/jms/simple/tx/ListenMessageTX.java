@@ -6,6 +6,7 @@ import ru.codeunited.jms.service.*;
 
 import javax.jms.*;
 
+import static ru.codeunited.jms.simple.JmsHelper.connect;
 import static ru.codeunited.jms.simple.JmsHelper.getConnectionFactory;
 import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
 
@@ -22,13 +23,13 @@ public class ListenMessageTX {
 
     private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
 
-    private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.TX";
+    private static final String TARGET_QUEUE = "SAMPLE.APPLICATION_INC";
 
     private static final long SHUTDOWN_TIMEOUT = 10000L;
 
     public static void main(String[] args) throws JMSException, InterruptedException {
         ConnectionFactory connectionFactory = getConnectionFactory();
-        Connection connection = connectionFactory.createConnection("ikonovalov", "");
+        Connection connection = connect(connectionFactory);
         final Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
 
         Queue queue = resolveQueue(TARGET_QUEUE, session);
@@ -38,6 +39,7 @@ public class ListenMessageTX {
 
         connection.start();     // !DON'T FORGET!
 
+        LOG.debug("Listen messages for {}ms...", SHUTDOWN_TIMEOUT);
         Thread.currentThread().join(SHUTDOWN_TIMEOUT); // Consume only 10 second
 
         // release resources

@@ -14,13 +14,16 @@ public class JmsHelper {
 
     public static MQQueueConnectionFactory getConnectionFactory() throws JMSException {
         MQQueueConnectionFactory connectionFactory = new MQQueueConnectionFactory();
-        connectionFactory.setHostName("ubuntu540");
-        connectionFactory.setPort(1414);
-        connectionFactory.setQueueManager("DEFQM");
+        connectionFactory.setConnectionNameList("etp3.sm-soft.ru(2424),etp4.sm-soft(2424)");
+        connectionFactory.setQueueManager("GU01QM");
         connectionFactory.setTransportType(1); // => MQConstants.TRANSPORT_MQSERIES_CLIENT
         connectionFactory.setCCSID(1208);
-        connectionFactory.setChannel("JVM.DEF.SVRCONN");
+        connectionFactory.setChannel("CLNT.SAMPLE.SVRCONN");
         return connectionFactory;
+    }
+
+    public static Connection connect(ConnectionFactory connectionFactory) throws JMSException {
+        return connectionFactory.createConnection("sample", "sample");
     }
 
     public static Queue resolveQueue(String name, Session session) throws JMSException {
@@ -38,9 +41,9 @@ public class JmsHelper {
         copy.setText(message.getText());
 
         // copy message properties
-        Enumeration<String> propertyNames = message.getPropertyNames();
+        Enumeration propertyNames = message.getPropertyNames();
         while (propertyNames.hasMoreElements()) {
-            String propName = propertyNames.nextElement();
+            String propName = (String) propertyNames.nextElement();
             Object propValue = message.getObjectProperty(propName);
             copy.setObjectProperty(propName, propValue);
         }

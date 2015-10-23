@@ -12,6 +12,7 @@
         <mq.java.lib>${mq.home}/java/lib</mq.java.lib>
         <mq.version>7.5.0</mq.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>4.2.1.RELEASE</spring.version>
     </properties>
     <dependencies>
         <dependency>
@@ -49,11 +50,27 @@
             <systemPath>${mq.java.lib}/dhbcore.jar</systemPath>
         </dependency>
 
+        <!-- test deps -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- Spring's dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
-            <version>4.2.1.RELEASE</version> <!-- 4.0.6.RELEASE has client ack strange behavior -->
+            <version>${spring.version}</version>
+            <!-- 4.0.6.RELEASE has client ack strange behavior -->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>

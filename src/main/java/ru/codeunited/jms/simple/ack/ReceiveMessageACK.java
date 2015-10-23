@@ -6,9 +6,7 @@ import ru.codeunited.jms.service.*;
 
 import javax.jms.*;
 
-import static ru.codeunited.jms.simple.JmsHelper.copyMessage;
-import static ru.codeunited.jms.simple.JmsHelper.getConnectionFactory;
-import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
+import static ru.codeunited.jms.simple.JmsHelper.*;
 
 
 /**
@@ -24,15 +22,15 @@ public class ReceiveMessageACK {
 
     private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
 
-    private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.ACK";
+    private static final String TARGET_QUEUE = "SAMPLE.APPLICATION_INC";
 
-    private static final String BACKOUT_QUEUE = "JMS.SMPL.BUSN.REQ.BK";
+    private static final String BACKOUT_QUEUE = "SAMPLE.APPLICATION_INC.BK";
 
     private static final long TIMEOUT = 1000L;
 
     public static void main(String[] args) throws JMSException {
         ConnectionFactory connectionFactory = getConnectionFactory();
-        Connection connection = connectionFactory.createConnection("ikonovalov", "");
+        Connection connection = connect(connectionFactory);
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         Queue queue = resolveQueue(TARGET_QUEUE, session);
         MessageConsumer consumer = session.createConsumer(queue);

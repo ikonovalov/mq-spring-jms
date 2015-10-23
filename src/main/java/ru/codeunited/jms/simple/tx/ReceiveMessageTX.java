@@ -6,6 +6,7 @@ import ru.codeunited.jms.service.*;
 
 import javax.jms.*;
 
+import static ru.codeunited.jms.simple.JmsHelper.connect;
 import static ru.codeunited.jms.simple.JmsHelper.getConnectionFactory;
 import static ru.codeunited.jms.simple.JmsHelper.resolveQueue;
 
@@ -22,13 +23,13 @@ public class ReceiveMessageTX {
 
     private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
 
-    private static final String TARGET_QUEUE = "JMS.SMPL.BUSN.REQ.TX";
+    private static final String TARGET_QUEUE = "SAMPLE.APPLICATION_INC";
 
     private static final long TIMEOUT = 1000L;
 
     public static void main(String[] args) throws JMSException {
         ConnectionFactory connectionFactory = getConnectionFactory();
-        Connection connection = connectionFactory.createConnection("ikonovalov", "");
+        Connection connection = connect(connectionFactory);
 
         // WORK UNIT START
         Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
