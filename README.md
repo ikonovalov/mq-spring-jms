@@ -4,7 +4,7 @@ mq-spring-jms
 This is juat a sample application. 
 
 That shows how to interact with WebSphere MQ via JMS API with and without Spring-JMS support.
-Samples uses really working infrastructure.
+Samples uses really working infrastructure (special thanks to *sm-soft.ru*).
 
 Properties                      |   Values
 --------------------------------|-----------------
@@ -13,10 +13,10 @@ wmq.qmgr.port                   |   2424
 wmq.qmgr.hosts                  |   etp3.sm-soft.ru(2424),etp4.sm-soft(2424)
 wmq.qmgr.clientReconnectTimeout |   1000
 wmq.qmgr.name                   |   GU01QM
-wmq.qmgr.channel                | CLNT.SAMPLE.SVRCONN
-wmq.qmgr.username               | sample
-wmq.qmgr.password               | sample
-wmq.qmgr.ccid                   | 1208
+wmq.qmgr.channel                |   CLNT.SAMPLE.SVRCONN
+wmq.qmgr.username               |   sample
+wmq.qmgr.password               |   sample
+wmq.qmgr.ccid                   |   1208
 
 Package structure:
 
