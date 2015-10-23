@@ -1,7 +1,9 @@
 mq-spring-jms
 =============
 
-This is juat a sample application. That shows how to interact with WebSphere MQ via JMS API with and without Spring-JMS support.
+This is juat a sample application. 
+
+That shows how to interact with WebSphere MQ via JMS API with and without Spring-JMS support.
 Samples uses really working infrastructure.
 
 Properties                      |   Values
@@ -18,8 +20,8 @@ wmq.qmgr.ccid                   | 1208
 
 Package structure:
 
-+ ru.codeunited.jms.service - business service package
-+ ru.codeunited.jms.simple  - JMS interaction under transaction(TX) and with client acknowledges(ACK)
-+ ru.codeunited.jms.spring  - JMS with Spring (with TX and ACK)
+- ru.codeunited.jms.service - business service package
+- ru.codeunited.jms.simple  - JMS interaction under transaction(TX) and with client acknowledges(ACK)
+- ru.codeunited.jms.spring  - JMS with Spring (with TX and ACK)
 
 **LGPL** licence.
