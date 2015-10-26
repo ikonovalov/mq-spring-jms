@@ -3,6 +3,7 @@ package ru.codeunited.jms.simple.ack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codeunited.jms.service.*;
+import ru.codeunited.jms.simple.ExceptionHandlingStrategy;
 
 import javax.jms.*;
 
@@ -18,10 +19,6 @@ public class ReceiveMessageACK {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReceiveMessageACK.class);
 
-    private static final BusinessService service = new BusinessNumberServiceImpl();
-
-    private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
-
     private static final String TARGET_QUEUE = "SAMPLE.APPLICATION_INC";
 
     private static final String BACKOUT_QUEUE = "SAMPLE.APPLICATION_INC.BK";
@@ -29,11 +26,17 @@ public class ReceiveMessageACK {
     private static final long TIMEOUT = 1000L;
 
     public static void main(String[] args) throws JMSException {
+
+        BusinessService service = new BusinessNumberServiceImpl();
+        MessageLoggerService logService = new MessageLoggerServiceImpl();
+
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connect(connectionFactory);
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         Queue queue = resolveQueue(TARGET_QUEUE, session);
         MessageConsumer consumer = session.createConsumer(queue);
+
+        ExceptionHandlingStrategy exceptionHandlingStrategy = new BackoutOnExceptionStrategy(BACKOUT_QUEUE, logService);
 
         connection.start();             // !DON'T FORGET!
         TextMessage message = (TextMessage) consumer.receive(TIMEOUT); // or receive(), or receiveNoWait
@@ -48,16 +51,7 @@ public class ReceiveMessageACK {
             } catch (Exception e) {
                 logService.error(message, e);
 
-                // backout or redelivery
-                if (message.getJMSRedelivered()) { // or use JMSXDeliveryCount to makes decision
-                    String originalMessageId = message.getJMSMessageID();
-                    moveToBackout(BACKOUT_QUEUE, session, message, e);
-                    logService.backout(BACKOUT_QUEUE, originalMessageId, message);
-                    message.acknowledge();
-                } else {
-                    session.recover();
-                    LOG.warn("Session recovered");
-                }
+                exceptionHandlingStrategy.handle(session, message, e);
             }
             message = (TextMessage) consumer.receive(TIMEOUT);
         }

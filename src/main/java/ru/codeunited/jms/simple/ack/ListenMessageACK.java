@@ -3,6 +3,7 @@ package ru.codeunited.jms.simple.ack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codeunited.jms.service.*;
+import ru.codeunited.jms.simple.ExceptionHandlingStrategy;
 
 import javax.jms.*;
 
@@ -17,10 +18,6 @@ public class ListenMessageACK {
 
     private static final Logger LOG = LoggerFactory.getLogger(ListenMessageACK.class);
 
-    private static final BusinessService service = new BusinessNumberServiceImpl();
-
-    private static final MessageLoggerService logService = new MessageLoggerServiceImpl();
-
     private static final String TARGET_QUEUE = "SAMPLE.APPLICATION_INC";
 
     private static final String BACKOUT_QUEUE = "SAMPLE.APPLICATION_INC.BK";
@@ -28,6 +25,10 @@ public class ListenMessageACK {
     private static final long SHUTDOWN_TIMEOUT = 30000L;
 
     public static void main(String[] args) throws JMSException, InterruptedException {
+
+        MessageLoggerService logService = new MessageLoggerServiceImpl();
+        BusinessService service = new BusinessNumberServiceImpl();
+
         ConnectionFactory connectionFactory = getConnectionFactory();
         Connection connection = connect(connectionFactory);
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -35,7 +36,8 @@ public class ListenMessageACK {
         MessageConsumer consumer = session.createConsumer(queue);
         consumer.setMessageListener(
                 new LogMessageListenerACK(service, logService, session)
-                        .setBackoutQueue(BACKOUT_QUEUE)
+                        .setExceptionHandlingStrategy(new BackoutOnExceptionStrategy(BACKOUT_QUEUE, logService))
+                //.setExceptionHandlingStrategy(new RecoverOnException())
         );
 
         connection.start();     // !DON'T FORGET!
@@ -59,7 +61,7 @@ public class ListenMessageACK {
 
         private final Session session;
 
-        private Queue backoutQueue;
+        private ExceptionHandlingStrategy exceptionHandlingStrategy;
 
         private LogMessageListenerACK(BusinessService service, MessageLoggerService loggerService, Session session) {
             this.service = service;
@@ -67,55 +69,25 @@ public class ListenMessageACK {
             this.session = session;
         }
 
-        public LogMessageListenerACK setBackoutQueue(String backoutQueueName) throws JMSException {
-            this.backoutQueue = resolveQueue(backoutQueueName, session);
+        public LogMessageListenerACK setExceptionHandlingStrategy(ExceptionHandlingStrategy exceptionHandlingStrategy) {
+            this.exceptionHandlingStrategy = exceptionHandlingStrategy;
             return this;
         }
 
         @Override
         public void onMessage(Message message) {
             TextMessage textMessage = (TextMessage) message;
-            logService.incoming(textMessage);
+            loggerService.incoming(textMessage);
             try {
 
                 BusinessResponse response = service.processRequest(new BusinessRequest(textMessage.getText()));
 
                 message.acknowledge();
-                logService.handled(message);
+                loggerService.handled(message);
 
             } catch (Exception e) {
-                logService.error(message, e);
-                try {
-                    String messageID = message.getJMSMessageID();
-
-                    // recover or backout
-                    if (message.getJMSRedelivered()) {
-                        moveToBackout(message, e);
-                        message.acknowledge();
-                        logService.backout(backoutQueue.getQueueName(), messageID, message);
-                    } else {
-                        session.recover();
-                        LOG.error("Session recovered");
-                    }
-
-                } catch (JMSException e1) {
-                    LOG.error(e1.getMessage());
-                }
-            }
-        }
-
-        public void moveToBackout(Message message, Exception exception) {
-            try {
-                if (backoutQueue != null) {
-                    MessageProducer producer = session.createProducer(backoutQueue);
-                    Message messageCopy = copyMessage(session, message);
-                    messageCopy.setStringProperty("Error", exception.getMessage());
-
-                    producer.send(messageCopy);
-                    producer.close();
-                }
-            } catch (JMSException e) {
-                LOG.error(e.getMessage());
+                loggerService.error(message, e);
+                exceptionHandlingStrategy.handle(session, message, e);
             }
         }
     }
