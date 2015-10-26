@@ -1,4 +1,4 @@
-package ru.codeunited.jms.simple.ack;
+package ru.codeunited.jms.simple.ack.strategy;
 
 import ru.codeunited.jms.service.MessageLoggerService;
 import ru.codeunited.jms.simple.AbstractBackoutExceptionHandligStrategy;
@@ -16,7 +16,7 @@ import javax.jms.Session;
  */
 public class BackoutOnExceptionStrategy extends AbstractBackoutExceptionHandligStrategy implements ExceptionHandlingStrategy {
 
-    protected BackoutOnExceptionStrategy(String backoutQueueName, MessageLoggerService messageLoggerService) {
+    public BackoutOnExceptionStrategy(String backoutQueueName, MessageLoggerService messageLoggerService) {
         super(backoutQueueName, messageLoggerService);
     }
 

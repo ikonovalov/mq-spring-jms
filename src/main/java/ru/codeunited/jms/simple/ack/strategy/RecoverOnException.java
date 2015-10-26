@@ -1,4 +1,4 @@
-package ru.codeunited.jms.simple.ack;
+package ru.codeunited.jms.simple.ack.strategy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.codeunited.jms.service.*;
 import ru.codeunited.jms.simple.ExceptionHandlingStrategy;
+import ru.codeunited.jms.simple.ack.strategy.BackoutOnExceptionStrategy;
 
 import javax.jms.*;
 
