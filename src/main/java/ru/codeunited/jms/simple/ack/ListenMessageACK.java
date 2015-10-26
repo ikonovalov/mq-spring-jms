@@ -25,7 +25,7 @@ public class ListenMessageACK {
 
     private static final String BACKOUT_QUEUE = "SAMPLE.APPLICATION_INC.BK";
 
-    private static final long SHUTDOWN_TIMEOUT = 10000L;
+    private static final long SHUTDOWN_TIMEOUT = 30000L;
 
     public static void main(String[] args) throws JMSException, InterruptedException {
         ConnectionFactory connectionFactory = getConnectionFactory();
@@ -33,7 +33,6 @@ public class ListenMessageACK {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         Queue queue = resolveQueue(TARGET_QUEUE, session);
         MessageConsumer consumer = session.createConsumer(queue);
-
         consumer.setMessageListener(
                 new LogMessageListenerACK(service, logService, session)
                         .setBackoutQueue(BACKOUT_QUEUE)

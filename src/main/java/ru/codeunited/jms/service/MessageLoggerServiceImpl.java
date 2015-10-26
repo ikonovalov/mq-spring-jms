@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
+import java.util.Date;
 
 /**
  * codeunited.ru
@@ -41,7 +42,7 @@ public class MessageLoggerServiceImpl implements MessageLoggerService {
     @Override
     public void error(Message message, Exception e) {
         try {
-            logger.error("Message ID={} cause error: {}", message.getJMSMessageID(), e.getMessage());
+            logger.error("Message ID={} cause error: {}. Message time stamp: {}. Redelivery={}", message.getJMSMessageID(), e.getMessage(), new Date(message.getJMSTimestamp()), getRedeliveryCount(message));
         } catch (JMSException ejms) {
             logger.warn(ejms.getMessage());
         }

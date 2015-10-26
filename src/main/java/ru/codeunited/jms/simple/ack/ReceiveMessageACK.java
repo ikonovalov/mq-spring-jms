@@ -62,6 +62,8 @@ public class ReceiveMessageACK {
             message = (TextMessage) consumer.receive(TIMEOUT);
         }
 
+        LOG.info("Queue is empty");
+
         // release resources
         connection.stop();
         consumer.close();

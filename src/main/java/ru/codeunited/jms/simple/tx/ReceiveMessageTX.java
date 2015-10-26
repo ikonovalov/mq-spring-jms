@@ -54,6 +54,8 @@ public class ReceiveMessageTX {
             }
             message = (TextMessage) consumer.receive(TIMEOUT);
         }
+
+        LOG.info("Queue is empty");
         // WORK UNIT END
 
         // release resources
