@@ -1,9 +1,11 @@
 package ru.codeunited.jms;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,19 +23,25 @@ public class ValidateOriginalMessagesTest {
 
     private Logger logger = LoggerFactory.getLogger(ValidateOriginalMessagesTest.class);
 
-    @Test
-    public void validate() throws ParserConfigurationException, IOException, SAXException {
+    private SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Source schemaFile = new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/v5_2.xsd"));
-        Schema schema = factory.newSchema(schemaFile);
+    private Source schemaFile = new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/v5_2.xsd"));
+
+    private Schema schema;
+
+    @Before
+    public void init() throws SAXException {
+        schema = factory.newSchema(schemaFile);
         logger.debug("Schema uploaded.");
+    }
 
-        Validator validator = schema.newValidator(); // not thread safe and not reenterz
+    @Test(expected = SAXParseException.class)
+    public void validate() throws ParserConfigurationException, IOException, SAXException {
+        Validator validator = schema.newValidator(); // not thread safe and not reenter
         logger.debug("Validator ready.");
 
         try {
-            validator.validate(new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/message.xml")));
+            validator.validate(new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/message_bad.xml")));
         } catch (SAXException e) {
             logger.error("Validation failed. {}", e.getMessage());
             throw e;
