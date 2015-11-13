@@ -4,16 +4,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import ru.codeunited.jms.service.SchemaLookupService;
+import ru.codeunited.jms.service.SchemaServiceFactory;
 
 import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 
 /**
@@ -25,23 +36,41 @@ public class ValidateOriginalMessagesTest {
 
     private SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-    private Source schemaFile = new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/v5_2.xsd"));
+    private Source schemaV52 = new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/v5_2.xsd"));
 
-    private Schema schema;
+    private SchemaLookupService schemaLookupService = SchemaServiceFactory.create();
 
     @Before
     public void init() throws SAXException {
-        schema = factory.newSchema(schemaFile);
-        logger.debug("Schema uploaded.");
+
+
     }
 
     @Test(expected = SAXParseException.class)
-    public void validate() throws ParserConfigurationException, IOException, SAXException {
+    public void validate() throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        builderFactory.setNamespaceAware(true);
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        Document document = builder.parse(ValidateOriginalMessagesTest.class.getResourceAsStream("/message_bad.xml"));
+
+        // extract serviceCode and perform schema augmentation
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        String serviceCode = (String) xpath.evaluate("//*[local-name()='ServiceTypeCode']/text()", document, XPathConstants.STRING);
+        Schema schema;
+        if (serviceCode != null) {
+            schema = factory.newSchema(new Source[]{schemaV52, schemaLookupService.lookupForService(serviceCode)});
+        } else {
+            schema = factory.newSchema(schemaV52);
+        }
+        logger.debug("Schema uploaded.");
+
+
+        // perform validation
         Validator validator = schema.newValidator(); // not thread safe and not reenter
         logger.debug("Validator ready.");
 
         try {
-            validator.validate(new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/message_bad.xml")));
+            validator.validate(new DOMSource(document));
         } catch (SAXException e) {
             logger.error("Validation failed. {}", e.getMessage());
             throw e;
