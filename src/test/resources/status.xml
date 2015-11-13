@@ -1,0 +1,9 @@
+<out:StatusMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://asguf.mos.ru/rkis_gu/coordinate/v5_2/"
+                   xmlns:out="http://asguf.mos.ru/rkis_gu/coordinate/v5_2/">
+    <out:ResponseDate>2015-10-16T12:18:36.177Z</out:ResponseDate>
+    <out:PlanDate xsi:nil="true"/>
+    <out:StatusCode>1040</out:StatusCode>
+    <out:StatusDate>2015-10-16T12:18:36.177Z</out:StatusDate>
+    <out:ServiceNumber>0752-9000002-043301-6003707/15</out:ServiceNumber>
+</out:StatusMessage>

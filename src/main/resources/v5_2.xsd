@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://asguf.mos.ru/rkis_gu/coordinate/v5_2/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://asguf.mos.ru/rkis_gu/coordinate/v5_2/">
+    <xs:element name="GetRequestList">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="request" type="tns:GetRequestListInMessage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="GetRequestListInMessage">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:MessageBase">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="FromDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="ToDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="ServiceCode" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="MessageBase" abstract="true"/>
+    <xs:complexType name="GetRequestListOutMessage">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:MessageBase">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Requests" type="tns:ArrayOfSmallRequestInfo"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfSmallRequestInfo">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Request" nillable="true" type="tns:SmallRequestInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SmallRequestInfo">
+        <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="CreatedDate" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusCode" type="xs:int"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusDate" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="GetRequestListResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="GetRequestListResult"
+                            type="tns:GetRequestListOutMessage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetRequests">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="request" type="tns:GetRequestsInMessage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="GetRequestsInMessage">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:MessageBase">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="FromDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="ToDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="ServiceCode" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumbers"
+                                type="tns:ArrayOfServiceNumberStatusesOnly"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfServiceNumberStatusesOnly">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceNumberStatusesOnly" nillable="true"
+                        type="tns:ServiceNumberStatusesOnly"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceNumberStatusesOnly">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusesOnly" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="GetRequestsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="GetRequestsResult" type="tns:GetRequestsOutMessage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="GetRequestsOutMessage">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:MessageBase">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Requests" type="tns:ArrayOfRequestInfo"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfRequestInfo">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Request" nillable="true" type="tns:RequestInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RequestInfo">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Declarant" type="tns:BaseDeclarant"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Trustee" type="tns:RequestContact"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Service" type="tns:RequestServiceNoFiles"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Statuses" type="tns:RequestStatus"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Tasks" type="tns:RequestQueryTask"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CustomAttributes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Contacts" type="tns:RequestContact"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Signature" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BaseDeclarant" abstract="true"/>
+    <xs:complexType name="RequestAccount">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:BaseDeclarant">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="FullName" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="BrandName" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Brand" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Ogrn" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OgrnAuthority" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OgrnAuthorityAddress" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OgrnNum" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="OgrnDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Inn" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="InnAuthority" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="InnAuthorityAddress" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="InnNum" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="InnDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Kpp" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Okpo" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OrgFormCode" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="PostalAddress" type="tns:Address"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="FactAddress" type="tns:Address"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OrgHead" type="tns:RequestContact"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Okved" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Okfs" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="BankName" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="BankBik" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="CorrAccount" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="SetAccount" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Phone" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Fax" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="EMail" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="WebSite" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Address">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Country" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CountryCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="PostalCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Locality" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Region" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="City" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Town" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Street" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="House" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Building" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Structure" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Facility" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Ownership" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Flat" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="POBox" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Okato" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="KladrCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="KladrStreetCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="OMKDistrictCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="OMKRegionCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="OMKTownCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="OMKStreetCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="BTIStreetCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="BTIBuildingCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RequestContact">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:BaseDeclarant">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="LastName" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="FirstName" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="MiddleName" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="Gender" nillable="true" type="tns:GenderType"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Snils" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Inn" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="RegAddress" type="tns:Address"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="FactAddress" type="tns:Address"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="MobilePhone" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="WorkPhone" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="HomePhone" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="EMail" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Nation" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="Citizenship" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="CitizenshipType" nillable="true"
+                                type="tns:CitizenshipType"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="CitizenshipCode" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="BirthAddress" type="tns:Address"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="JobTitle" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OMSNum" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="OMSDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="OMSCompany" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="OMSValidityPeriod" nillable="true"
+                                type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="IsiId" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="SsoId" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="GenderType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Male"/>
+            <xs:enumeration value="Female"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CitizenshipType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RF"/>
+            <xs:enumeration value="Foreign"/>
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="Both"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RequestServiceNoFiles">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RegNum" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="RegDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceTypeCode" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ServicePrice" nillable="true" type="xs:decimal"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="PrepareTargetDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="OutputTargetDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="Copies" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Responsible" type="tns:Person"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Department" type="tns:Department"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Documents" type="tns:ArrayOfServiceDocumentNoFiles"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DeclineReasonCodes" type="tns:ArrayOfString"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CreatedByDepartment" type="tns:Department"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="PrepareFactDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="OutputFactDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="OutputKind" nillable="true" type="tns:OutputKindType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Person">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="LastName" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="FirstName" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="MiddleName" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="JobTitle" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Phone" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Email" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="IsiId" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="SsoId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Department">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Inn" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Ogrn" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="RegDate" nillable="true" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfServiceDocumentNoFiles">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceDocumentNoFiles" nillable="true"
+                        type="tns:ServiceDocumentNoFiles"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceDocumentNoFiles">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocSubType" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocPerson" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocSerie" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocNumber" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="DocDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ValidityPeriod" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="WhoSign" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ListCount" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="CopyCount" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DivisionCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Signature" type="xs:base64Binary"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CustomAttributes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfString">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="OutputKindType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Personally"/>
+            <xs:enumeration value="Telephone"/>
+            <xs:enumeration value="Portal"/>
+            <xs:enumeration value="EMail"/>
+            <xs:enumeration value="Mail"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RequestStatus">
+        <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusCode" type="xs:int"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusDate" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Reason" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ValidityPeriod" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Responsible" type="tns:Person"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Department" type="tns:Department"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ReasonCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RequestQueryTask">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RequestId" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Subject" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ValidityPeriod" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusCode" type="xs:int"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Responsible" type="tns:Person"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Department" type="tns:Department"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Message" type="tns:CoordinateData"/>
+    <xs:complexType name="CoordinateData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Declarant" type="tns:BaseDeclarant"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Trustee" type="tns:RequestContact"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Service" type="tns:RequestService"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CustomAttributes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="1" name="Contacts" type="tns:ArrayOfRequestContact"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Signature" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RequestService">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RegNum" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="RegDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceTypeCode" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ServicePrice" nillable="true" type="xs:decimal"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="PrepareTargetDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="OutputTargetDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="Copies" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Responsible" type="tns:Person"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Department" type="tns:Department"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Documents" type="tns:ArrayOfServiceDocument"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DeclineReasonCodes" type="tns:ArrayOfString"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CreatedByDepartment" type="tns:Department"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="PrepareFactDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="OutputFactDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="OutputKind" nillable="true" type="tns:OutputKindType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfServiceDocument">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceDocument" nillable="true"
+                        type="tns:ServiceDocument"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceDocument">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocSubType" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocPerson" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocSerie" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocNumber" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="DocDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ValidityPeriod" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="WhoSign" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ListCount" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="CopyCount" nillable="true" type="xs:int"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DivisionCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Signature" type="xs:base64Binary"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocNotes" type="tns:ArrayOfNote"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocFiles" type="tns:ArrayOfFile"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CustomAttributes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfNote">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Note" nillable="true" type="tns:Note"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Note">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Subject" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Text" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfFile">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="File" nillable="true" type="tns:File"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="File">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="FileName" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="MimeType" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="FileContent" type="xs:base64Binary"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="IsFileInStore" nillable="true" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="FileIdInStore" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="StoreName" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="FileChecksum" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfRequestContact">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestContact" nillable="true"
+                        type="tns:RequestContact"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ServiceHeader" type="tns:Headers"/>
+    <xs:complexType name="Headers">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="FromOrgCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ToOrgCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="MessageId" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="RelatesTo" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="RequestDateTime" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="TaskMessage" type="tns:CoordinateTaskData"/>
+    <xs:complexType name="CoordinateTaskData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Task" type="tns:RequestTask"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Data" type="tns:DocumentsRequestData"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Signature"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RequestTask">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RequestId" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Subject" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ValidityPeriod" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Responsible" type="tns:Person"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Department" type="tns:Department"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceTypeCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DocumentsRequestData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="DocumentTypeCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ParameterTypeCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Parameter">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="IncludeXmlView" type="xs:boolean"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="IncludeBinaryView" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="StatusMessage" type="tns:CoordinateStatusData"/>
+    <xs:complexType name="CoordinateStatusData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RequestId" type="xs:string"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="ResponseDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="PlanDate" nillable="true" type="xs:dateTime"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusCode" type="xs:int"/>
+            <xs:element minOccurs="1" maxOccurs="1" name="StatusDate" type="xs:dateTime"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Responsible" type="tns:Person"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Documents" type="tns:ArrayOfServiceDocument"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Contacts" type="tns:ArrayOfRequestContact"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Note" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Result" type="tns:RequestResult"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ReasonCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Department" type="tns:Department"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RequestResult">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ResultCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DeclineReasonCode" type="tns:ArrayOfString"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ErrorMessage">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="Error" type="tns:ErrorMessageData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="ErrorMessageData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="ErrorText" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="RequestsMessage" type="tns:ArrayOfCoordinateData"/>
+    <xs:complexType name="ArrayOfCoordinateData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="CoordinateData" nillable="true"
+                        type="tns:CoordinateData"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="TasksMessage" type="tns:ArrayOfCoordinateTaskData"/>
+    <xs:complexType name="ArrayOfCoordinateTaskData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="CoordinateTaskData" nillable="true"
+                        type="tns:CoordinateTaskData"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="StatusesMessage" type="tns:ArrayOfSetFilesAndStatusesData"/>
+    <xs:complexType name="ArrayOfSetFilesAndStatusesData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="SetFilesAndStatusesData" nillable="true"
+                        type="tns:SetFilesAndStatusesData"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SetFilesAndStatusesData">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ServiceNumber" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="RequestId" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Statuses" type="tns:ArrayOfRequestStatus"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Result" type="tns:RequestResult"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Documents" type="tns:ArrayOfServiceDocument"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Contacts" type="tns:ArrayOfRequestContact"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ArrayOfRequestStatus">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestStatus" nillable="true"
+                        type="tns:RequestStatus"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
