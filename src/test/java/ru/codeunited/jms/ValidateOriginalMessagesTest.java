@@ -5,7 +5,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import ru.codeunited.jms.service.SchemaLookupService;
@@ -38,20 +41,16 @@ public class ValidateOriginalMessagesTest {
 
     private Source schemaV52 = new StreamSource(ValidateOriginalMessagesTest.class.getResourceAsStream("/v5_2.xsd"));
 
-    private SchemaLookupService schemaLookupService = SchemaServiceFactory.create();
-
-    @Before
-    public void init() throws SAXException {
-
-
-    }
 
     @Test(expected = SAXParseException.class)
     public void validate() throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        SchemaLookupService schemaLookupService = SchemaServiceFactory.create();
+
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         builderFactory.setNamespaceAware(true);
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         Document document = builder.parse(ValidateOriginalMessagesTest.class.getResourceAsStream("/message_bad.xml"));
+
 
         // extract serviceCode and perform schema augmentation
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -62,6 +61,40 @@ public class ValidateOriginalMessagesTest {
         } else {
             schema = factory.newSchema(schemaV52);
         }
+        logger.debug("Schema uploaded.");
+
+
+        // perform validation
+        Validator validator = schema.newValidator(); // not thread safe and not reenter
+        logger.debug("Validator ready.");
+
+        try {
+            validator.validate(new DOMSource(document));
+        } catch (SAXException e) {
+            logger.error("Validation failed. {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Test
+    public void validateWithDetachedCustomAttributes() throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        builderFactory.setNamespaceAware(true);
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        Document document = builder.parse(ValidateOriginalMessagesTest.class.getResourceAsStream("/message_bad.xml"));
+
+        // detach CustomAttributes
+        XPath xpathCustomAttributes = XPathFactory.newInstance().newXPath();
+        NodeList customAttributes = (NodeList) xpathCustomAttributes.evaluate("//*[local-name()='CustomAttributes']", document, XPathConstants.NODESET);
+        for (int n = 0; n < customAttributes.getLength(); n++) {
+            Element customAttrNode = (Element) customAttributes.item(n);
+            customAttrNode.getParentNode().removeChild(customAttrNode);
+            logger.debug("Remove node {} ", customAttrNode);
+        }
+
+        // prepare schema
+        Schema schema = factory.newSchema(schemaV52);
+
         logger.debug("Schema uploaded.");
 
 

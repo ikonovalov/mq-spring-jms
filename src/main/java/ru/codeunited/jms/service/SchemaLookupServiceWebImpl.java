@@ -18,6 +18,13 @@ public class SchemaLookupServiceWebImpl implements SchemaLookupService {
 
     private final String baseUrl;
 
+    private SchemaCache schemaCache = new SchemaCache() { // default implementation
+        @Override
+        public Source lookupByServiceTypeCode(String code) {
+            return null;
+        }
+    };
+
     SchemaLookupServiceWebImpl() {
         this("http://212.45.30.101:81/Information/GetCustomAttributesSchemaHandler.ashx");
     }
@@ -26,12 +33,26 @@ public class SchemaLookupServiceWebImpl implements SchemaLookupService {
         this.baseUrl = url;
     }
 
+    protected SchemaCache getSchemaCache() {
+        return schemaCache;
+    }
+
+    protected void setSchemaCache(SchemaCache schemaCache) {
+        this.schemaCache = schemaCache;
+    }
+
     @Override
     public Source lookupForService(String serviceCode) throws IOException {
         if (serviceCode == null)
             return null;
-        URL url = new URL(baseUrl + "?servicecode=" + serviceCode);
-        return new StreamSource(new BufferedInputStream(url.openStream()));
+        Source cached = schemaCache.lookupByServiceTypeCode(serviceCode);
+        if (cached == null) {
+            URL url = new URL(baseUrl + "?servicecode=" + serviceCode);
+            //  TODO: 13.11.15 store in a cache
+            return new StreamSource(new BufferedInputStream(url.openStream()));
+        } else {
+            return cached;
+        }
     }
 
 }

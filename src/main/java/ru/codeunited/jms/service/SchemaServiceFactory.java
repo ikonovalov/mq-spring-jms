@@ -6,7 +6,13 @@ package ru.codeunited.jms.service;
 public class SchemaServiceFactory {
 
     public static SchemaLookupService create() {
-        return new SchemaLookupServiceWebImpl();
+        SchemaLookupServiceWebImpl serviceWeb = new SchemaLookupServiceWebImpl();
+        SchemaCacheH2Mem schemaCache = new SchemaCacheH2Mem();
+
+        schemaCache.init();
+        serviceWeb.setSchemaCache(schemaCache);
+
+        return serviceWeb;
     }
 
 }
