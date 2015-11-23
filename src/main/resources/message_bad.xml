@@ -1,0 +1,173 @@
+<Message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns="http://asguf.mos.ru/rkis_gu/coordinate/v5_2/">
+    <Declarant xsi:type="RequestContact">
+        <Id>21ad84b8-b862-e511-baf4-005056802550</Id>
+        <LastName>волкова</LastName>
+        <FirstName>наталья</FirstName>
+        <MiddleName>владимировна</MiddleName>
+        <Gender>Male</Gender>
+        <BirthDate>1977-02-09T23:00:00</BirthDate>
+        <Snils1>008-686-896 02</Snils1>
+        <RegAddress>
+            <City>г. Москва</City>
+            <Street>улица Генерала Белова</Street>
+            <House>19</House>
+            <Structure>1</Structure>
+            <Okato>45296577000</Okato>
+            <OMKDistrictCode>0600</OMKDistrictCode>
+            <OMKRegionCode>0616</OMKRegionCode>
+            <OMKStreetCode>01585</OMKStreetCode>
+            <BTIStreetCode>310</BTIStreetCode>
+            <BTIBuildingCode>4308081</BTIBuildingCode>
+        </RegAddress>
+        <FactAddress>
+            <Street>Воронцовская 23</Street>
+        </FactAddress>
+        <MobilePhone>4(951)234-56-7</MobilePhone>
+        <WorkPhone>(495)123-45-67</WorkPhone>
+        <HomePhone>(495)678-91-23</HomePhone>
+        <EMail>nvlvolkova@gmail.com</EMail>
+        <Citizenship>Россия</Citizenship>
+        <CitizenshipType xsi:nil="true"/>
+        <BirthAddress/>
+        <JobTitle>Заместитель директора</JobTitle>
+        <OMSDate xsi:nil="true"/>
+        <OMSValidityPeriod xsi:nil="true"/>
+        <IsiId>08f26220-9eb3-4c0e-bfd8-8810ee79a6aa</IsiId>
+        <SsoId>90ef855f-6232-4d38-a4d9-46d5bbcf0348</SsoId>
+    </Declarant>
+    <Service>
+        <RegNum>01698-2015</RegNum>
+        <RegDate>2015-09-24T15:35:00</RegDate>
+        <ServiceNumber>0468-9000002-051201-303418/15</ServiceNumber>
+        <ServiceTypeCode>051201</ServiceTypeCode>
+        <ServicePrice>0.0000</ServicePrice>
+        <PrepareTargetDate>2015-09-25T00:00:00</PrepareTargetDate>
+        <OutputTargetDate>2015-09-28T00:00:00</OutputTargetDate>
+        <Copies>1</Copies>
+        <Responsible>
+            <LastName>Специалист</LastName>
+            <FirstName>Управа района Арбат</FirstName>
+        </Responsible>
+        <Department>
+            <Name>Управа района &quot;Арбат&quot;</Name>
+            <Code>468</Code>
+            <RegDate xsi:nil="true"/>
+        </Department>
+        <Documents>
+            <ServiceDocument>
+                <Id>2b3acf43-b862-e511-baf4-005056802550</Id>
+                <DocCode>20001</DocCode>
+                <DocPerson>21ad84b8-b862-e511-baf4-005056802550</DocPerson>
+                <DocSerie>4502</DocSerie>
+                <DocNumber>033639</DocNumber>
+                <DocDate>2002-09-09T00:00:00</DocDate>
+                <ValidityPeriod xsi:nil="true"/>
+                <WhoSign>ОВД</WhoSign>
+                <ListCount xsi:nil="true"/>
+                <CopyCount xsi:nil="true"/>
+                <DivisionCode>772-005</DivisionCode>
+                <Signature>
+                    MIIFxwYJKoZIhvcNAQcCoIIFuDCCBbQCAQExDDAKBgYqhQMCAgkFADALBgkqhkiG9w0BBwGgggNAMIIDPDCCAuugAwIBAgITEgAANjkaECmjbinEAgAAAAA2OTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTQxMDAzMTA1OTExWhcNMTUxMDAzMTEwOTExWjBLMR4wHAYJKoZIhvcNAQkBFg92Z3Jla2hvdkBwcHIucnUxGzAZBgNVBAMMEkNvb3JkaW5hdGVWNENsaWVudDEMMAoGA1UECgwDUHByMGMwHAYGKoUDAgITMBIGByqFAwICJAAGByqFAwICHgEDQwAEQEoI+uvtczbowNb0R0TKXody+gqcDSz+dqvQ4ujcEbTwGZXfbK06XHgzOclAryPxTtCEK0RsdUzYqrpk6WYViiejggFwMIIBbDAOBgNVHQ8BAf8EBAMCBPAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFNVbVbWr9JSs7Vc81IbmBZGJjn/eMB8GA1UdIwQYMBaAFBUxfLCNGt5m1xWcSVKXFyS5AXqDMFkGA1UdHwRSMFAwTqBMoEqGSGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNybDCBqQYIKwYBBQUHAQEEgZwwgZkwYQYIKwYBBQUHMAKGVWh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvdGVzdC1jYS0yMDE0X0NSWVBUTy1QUk8lMjBUZXN0JTIwQ2VudGVyJTIwMi5jcnQwNAYIKwYBBQUHMAGGKGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L29jc3Avb2NzcC5zcmYwCAYGKoUDAgIDA0EAgVlsK+j+3ZXT5/4iRLjT79GNkysYkwuiSGz8KfDaqdkbNSPsrrszBBdaz0d3Vxc8wTydJF6rUSrX6FrzGQ8a/DGCAk4wggJKAgEBMIGWMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSAAA2ORoQKaNuKcQCAAAAADY5MAoGBiqFAwICCQUAoIIBUDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xNTA5MjQxMjM1MjlaMC8GCSqGSIb3DQEJBDEiBCBxx2WS474WkkZx8MgOaUjwET1VOz1b9GwkGCFTRyMAWTCB5AYLKoZIhvcNAQkQAi8xgdQwgdEwgc4wgcswCAYGKoUDAgIJBCA5ONQ4zLfUSt6YkKzOFOOImimakW6YMPWCXA84C5ayHzCBnDCBhKSBgTB/MSMwIQYJKoZIhvcNAQkBFhRzdXBwb3J0QGNyeXB0b3Byby5ydTELMAkGA1UEBhMCUlUxDzANBgNVBAcTBk1vc2NvdzEXMBUGA1UEChMOQ1JZUFRPLVBSTyBMTEMxITAfBgNVBAMTGENSWVBUTy1QUk8gVGVzdCBDZW50ZXIgMgITEgAANjkaECmjbinEAgAAAAA2OTAKBgYqhQMCAhMFAARAGpIUNmMg5ZTSbcaJSHjR7nkSVPK5Ii94Dd6Fo95KUssrZhSVhNZ7pxPpsh1vysVS1kYHqQlv7b2dL02/GUmnbA==
+                </Signature>
+                <DocFiles>
+                    <File>
+                        <Id>8da46481-c562-e511-baf4-005056802550</Id>
+                        <FileName>kladr.xml</FileName>
+                        <MimeType>text/xml</MimeType>
+                        <IsFileInStore>true</IsFileInStore>
+                        <FileIdInStore>idd_66718303-0B0D-4AFB-A3A3-F3BBD8D4944B</FileIdInStore>
+                        <StoreName>gu_docs</StoreName>
+                    </File>
+                </DocFiles>
+                <CustomAttributes>
+                    <ServiceProperties xmlns="">
+                        <benefitneverend>false</benefitneverend>
+                        <edv>true</edv>
+                        <priznak>1</priznak>
+                        <group>1</group>
+                        <flag1>false</flag1>
+                        <flag3>true</flag3>
+                        <flag2>false</flag2>
+                    </ServiceProperties>
+                </CustomAttributes>
+            </ServiceDocument>
+            <ServiceDocument>
+                <Id>cf26035e-b862-e511-baf4-005056802550</Id>
+                <DocCode>10870</DocCode>
+                <DocNumber>453</DocNumber>
+                <DocDate>2014-09-02T04:00:00</DocDate>
+                <ValidityPeriod xsi:nil="true"/>
+                <ListCount xsi:nil="true"/>
+                <CopyCount xsi:nil="true"/>
+                <Signature>
+                    MIIFxwYJKoZIhvcNAQcCoIIFuDCCBbQCAQExDDAKBgYqhQMCAgkFADALBgkqhkiG9w0BBwGgggNAMIIDPDCCAuugAwIBAgITEgAANjkaECmjbinEAgAAAAA2OTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTQxMDAzMTA1OTExWhcNMTUxMDAzMTEwOTExWjBLMR4wHAYJKoZIhvcNAQkBFg92Z3Jla2hvdkBwcHIucnUxGzAZBgNVBAMMEkNvb3JkaW5hdGVWNENsaWVudDEMMAoGA1UECgwDUHByMGMwHAYGKoUDAgITMBIGByqFAwICJAAGByqFAwICHgEDQwAEQEoI+uvtczbowNb0R0TKXody+gqcDSz+dqvQ4ujcEbTwGZXfbK06XHgzOclAryPxTtCEK0RsdUzYqrpk6WYViiejggFwMIIBbDAOBgNVHQ8BAf8EBAMCBPAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFNVbVbWr9JSs7Vc81IbmBZGJjn/eMB8GA1UdIwQYMBaAFBUxfLCNGt5m1xWcSVKXFyS5AXqDMFkGA1UdHwRSMFAwTqBMoEqGSGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNybDCBqQYIKwYBBQUHAQEEgZwwgZkwYQYIKwYBBQUHMAKGVWh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvdGVzdC1jYS0yMDE0X0NSWVBUTy1QUk8lMjBUZXN0JTIwQ2VudGVyJTIwMi5jcnQwNAYIKwYBBQUHMAGGKGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L29jc3Avb2NzcC5zcmYwCAYGKoUDAgIDA0EAgVlsK+j+3ZXT5/4iRLjT79GNkysYkwuiSGz8KfDaqdkbNSPsrrszBBdaz0d3Vxc8wTydJF6rUSrX6FrzGQ8a/DGCAk4wggJKAgEBMIGWMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSAAA2ORoQKaNuKcQCAAAAADY5MAoGBiqFAwICCQUAoIIBUDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xNTA5MjQxMjM1MjlaMC8GCSqGSIb3DQEJBDEiBCAbOCfadnqbFLDXuuPuaxd8d4HbV5xapP5gXGcglB22BjCB5AYLKoZIhvcNAQkQAi8xgdQwgdEwgc4wgcswCAYGKoUDAgIJBCA5ONQ4zLfUSt6YkKzOFOOImimakW6YMPWCXA84C5ayHzCBnDCBhKSBgTB/MSMwIQYJKoZIhvcNAQkBFhRzdXBwb3J0QGNyeXB0b3Byby5ydTELMAkGA1UEBhMCUlUxDzANBgNVBAcTBk1vc2NvdzEXMBUGA1UEChMOQ1JZUFRPLVBSTyBMTEMxITAfBgNVBAMTGENSWVBUTy1QUk8gVGVzdCBDZW50ZXIgMgITEgAANjkaECmjbinEAgAAAAA2OTAKBgYqhQMCAhMFAARAeYYv5hwcni/TAvOSI3CnPJfMBj3L8ky1L3/VgLW7mO+IRuSnAXzbkLz6aK/8nMZspRzsDc66+I/rPsufaXc14w==
+                </Signature>
+                <DocFiles>
+                    <File>
+                        <Id>a79a4e8f-c562-e511-baf4-005056802550</Id>
+                        <FileName>kladr.xml</FileName>
+                        <MimeType>text/xml</MimeType>
+                        <IsFileInStore>true</IsFileInStore>
+                        <FileIdInStore>idd_98D4A118-75E4-49EE-8ABE-ECF99FA32F4E</FileIdInStore>
+                        <StoreName>gu_docs</StoreName>
+                    </File>
+                </DocFiles>
+            </ServiceDocument>
+            <ServiceDocument>
+                <Id>dff5979f-b862-e511-baf4-005056802550</Id>
+                <DocCode>18</DocCode>
+                <DocNumber>01698-2015</DocNumber>
+                <DocDate>2015-09-24T00:00:00</DocDate>
+                <ValidityPeriod xsi:nil="true"/>
+                <ListCount xsi:nil="true"/>
+                <CopyCount xsi:nil="true"/>
+                <Signature>
+                    MIIFxwYJKoZIhvcNAQcCoIIFuDCCBbQCAQExDDAKBgYqhQMCAgkFADALBgkqhkiG9w0BBwGgggNAMIIDPDCCAuugAwIBAgITEgAANjkaECmjbinEAgAAAAA2OTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTQxMDAzMTA1OTExWhcNMTUxMDAzMTEwOTExWjBLMR4wHAYJKoZIhvcNAQkBFg92Z3Jla2hvdkBwcHIucnUxGzAZBgNVBAMMEkNvb3JkaW5hdGVWNENsaWVudDEMMAoGA1UECgwDUHByMGMwHAYGKoUDAgITMBIGByqFAwICJAAGByqFAwICHgEDQwAEQEoI+uvtczbowNb0R0TKXody+gqcDSz+dqvQ4ujcEbTwGZXfbK06XHgzOclAryPxTtCEK0RsdUzYqrpk6WYViiejggFwMIIBbDAOBgNVHQ8BAf8EBAMCBPAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFNVbVbWr9JSs7Vc81IbmBZGJjn/eMB8GA1UdIwQYMBaAFBUxfLCNGt5m1xWcSVKXFyS5AXqDMFkGA1UdHwRSMFAwTqBMoEqGSGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNybDCBqQYIKwYBBQUHAQEEgZwwgZkwYQYIKwYBBQUHMAKGVWh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvdGVzdC1jYS0yMDE0X0NSWVBUTy1QUk8lMjBUZXN0JTIwQ2VudGVyJTIwMi5jcnQwNAYIKwYBBQUHMAGGKGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L29jc3Avb2NzcC5zcmYwCAYGKoUDAgIDA0EAgVlsK+j+3ZXT5/4iRLjT79GNkysYkwuiSGz8KfDaqdkbNSPsrrszBBdaz0d3Vxc8wTydJF6rUSrX6FrzGQ8a/DGCAk4wggJKAgEBMIGWMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSAAA2ORoQKaNuKcQCAAAAADY5MAoGBiqFAwICCQUAoIIBUDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xNTA5MjQxMjM1MjlaMC8GCSqGSIb3DQEJBDEiBCAVXw71Zf7/t7/DS2/P2Iv1sB3Up4KxD85D7WZXik3ZgzCB5AYLKoZIhvcNAQkQAi8xgdQwgdEwgc4wgcswCAYGKoUDAgIJBCA5ONQ4zLfUSt6YkKzOFOOImimakW6YMPWCXA84C5ayHzCBnDCBhKSBgTB/MSMwIQYJKoZIhvcNAQkBFhRzdXBwb3J0QGNyeXB0b3Byby5ydTELMAkGA1UEBhMCUlUxDzANBgNVBAcTBk1vc2NvdzEXMBUGA1UEChMOQ1JZUFRPLVBSTyBMTEMxITAfBgNVBAMTGENSWVBUTy1QUk8gVGVzdCBDZW50ZXIgMgITEgAANjkaECmjbinEAgAAAAA2OTAKBgYqhQMCAhMFAARA8QRJ2Tlcl9jqCeZ9BwUcYZ8SGupatNJjcBHcR8RWSjMZqzi0R2OtOFtVCR2CwpPKKFHGRa+rWvP6v+Fr5MGQgw==
+                </Signature>
+                <DocFiles>
+                    <File>
+                        <Id>5192a295-c562-e511-baf4-005056802550</Id>
+                        <FileName>Заявление.doc</FileName>
+                        <MimeType>application/msword</MimeType>
+                        <IsFileInStore>true</IsFileInStore>
+                        <FileIdInStore>idd_900ADEB6-6D1D-43DD-B602-59E7509F1070</FileIdInStore>
+                        <StoreName>gu_docs</StoreName>
+                    </File>
+                </DocFiles>
+                <CustomAttributes>
+                    <ServiceProperties xmlns="">
+                        <period_kadastr_zu>false</period_kadastr_zu>
+                        <customer>false</customer>
+                        <type_arenda>false</type_arenda>
+                        <treb_zakl>false</treb_zakl>
+                        <agreement_year>false</agreement_year>
+                        <owner>false</owner>
+                    </ServiceProperties>
+                </CustomAttributes>
+            </ServiceDocument>
+        </Documents>
+        <CreatedByDepartment>
+            <Name>Управа района &quot;Арбат&quot;</Name>
+            <Code>468</Code>
+            <RegDate xsi:nil="true"/>
+        </CreatedByDepartment>
+        <PrepareFactDate xsi:nil="true"/>
+        <OutputFactDate xsi:nil="true"/>
+        <OutputKind>Personally</OutputKind>
+    </Service>
+    <CustomAttributes>
+        <ServiceProperties xmlns="">
+            <voting_stage>1</voting_stage>
+            <okato>45286552000</okato>
+            <classification_listening>1</classification_listening>
+            <unom>4308081</unom>
+            <grounds>3</grounds>
+            <answer_listening>4</answer_listening>
+        </ServiceProperties>
+    </CustomAttributes>
+    <Contacts/>
+    <Signature>
+        MIIFxwYJKoZIhvcNAQcCoIIFuDCCBbQCAQExDDAKBgYqhQMCAgkFADALBgkqhkiG9w0BBwGgggNAMIIDPDCCAuugAwIBAgITEgAANjkaECmjbinEAgAAAAA2OTAIBgYqhQMCAgMwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDIwHhcNMTQxMDAzMTA1OTExWhcNMTUxMDAzMTEwOTExWjBLMR4wHAYJKoZIhvcNAQkBFg92Z3Jla2hvdkBwcHIucnUxGzAZBgNVBAMMEkNvb3JkaW5hdGVWNENsaWVudDEMMAoGA1UECgwDUHByMGMwHAYGKoUDAgITMBIGByqFAwICJAAGByqFAwICHgEDQwAEQEoI+uvtczbowNb0R0TKXody+gqcDSz+dqvQ4ujcEbTwGZXfbK06XHgzOclAryPxTtCEK0RsdUzYqrpk6WYViiejggFwMIIBbDAOBgNVHQ8BAf8EBAMCBPAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFNVbVbWr9JSs7Vc81IbmBZGJjn/eMB8GA1UdIwQYMBaAFBUxfLCNGt5m1xWcSVKXFyS5AXqDMFkGA1UdHwRSMFAwTqBMoEqGSGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyLmNybDCBqQYIKwYBBQUHAQEEgZwwgZkwYQYIKwYBBQUHMAKGVWh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L0NlcnRFbnJvbGwvdGVzdC1jYS0yMDE0X0NSWVBUTy1QUk8lMjBUZXN0JTIwQ2VudGVyJTIwMi5jcnQwNAYIKwYBBQUHMAGGKGh0dHA6Ly90ZXN0Y2EuY3J5cHRvcHJvLnJ1L29jc3Avb2NzcC5zcmYwCAYGKoUDAgIDA0EAgVlsK+j+3ZXT5/4iRLjT79GNkysYkwuiSGz8KfDaqdkbNSPsrrszBBdaz0d3Vxc8wTydJF6rUSrX6FrzGQ8a/DGCAk4wggJKAgEBMIGWMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSAAA2ORoQKaNuKcQCAAAAADY5MAoGBiqFAwICCQUAoIIBUDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xNTA5MjQxMjM1MjhaMC8GCSqGSIb3DQEJBDEiBCAIXUVn0cYJJHWchAibrnTuepd3/+b13qFQpbFDhYMvwjCB5AYLKoZIhvcNAQkQAi8xgdQwgdEwgc4wgcswCAYGKoUDAgIJBCA5ONQ4zLfUSt6YkKzOFOOImimakW6YMPWCXA84C5ayHzCBnDCBhKSBgTB/MSMwIQYJKoZIhvcNAQkBFhRzdXBwb3J0QGNyeXB0b3Byby5ydTELMAkGA1UEBhMCUlUxDzANBgNVBAcTBk1vc2NvdzEXMBUGA1UEChMOQ1JZUFRPLVBSTyBMTEMxITAfBgNVBAMTGENSWVBUTy1QUk8gVGVzdCBDZW50ZXIgMgITEgAANjkaECmjbinEAgAAAAA2OTAKBgYqhQMCAhMFAARA+4jtOekMgKNgYXenIqYMFjq0xGztFL07MpGXKHXpzkjaP6/KcPsV2Tt+tNhq8Z2C5j0WNdKGH6k9WLTVG5lBFg==
+    </Signature>
+</Message>

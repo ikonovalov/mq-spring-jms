@@ -8,6 +8,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import java.util.Date;
+import java.util.Enumeration;
 
 /**
  * codeunited.ru
@@ -23,6 +24,12 @@ public class MessageLoggerServiceImpl implements MessageLoggerService {
     public void incoming(Message message) {
         try {
             logger.info("Incoming {} message. ID={}", message.getClass().getSimpleName(), message.getJMSMessageID());
+            Enumeration<String> properties = message.getPropertyNames();
+            while (properties.hasMoreElements()) {
+                String propertyName = properties.nextElement();
+                logger.info("\t{} = {}", propertyName, message.getObjectProperty(propertyName));
+            }
+
         } catch (JMSException e) {
             logger.warn(e.getMessage());
         }
