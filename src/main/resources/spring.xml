@@ -49,6 +49,12 @@
           p:username="${wmq.qmgr.username}"
           p:password="${wmq.qmgr.password}">
     </bean>
+    <bean id="jmsQueueSingleConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory"
+          p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured"
+          p:reconnectOnException="true">
+    </bean>
+
+    <!-- don't use caching. It has some side effects. -->
     <bean id="jmsQueueCachingConnectionFactorySecured"
           class="org.springframework.jms.connection.CachingConnectionFactory"
           p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured"
@@ -68,7 +74,7 @@
     <!-- local transacted(TX) listener container -->
     <jms:listener-container
             container-type="default"
-            connection-factory="jmsQueueCachingConnectionFactorySecured"
+            connection-factory="jmsQueueSingleConnectionFactory"
             concurrency="3-5"
             acknowledge="transacted">
         <jms:listener destination="${queue.request.tx}" ref="MQMessageTXListener"/>
@@ -77,7 +83,7 @@
     <!-- client acknowledge(ACK) listener container -->
     <jms:listener-container
             container-type="default"
-            connection-factory="jmsQueueCachingConnectionFactorySecured"
+            connection-factory="jmsQueueSingleConnectionFactory"
             concurrency="2"
             acknowledge="client">
         <jms:listener destination="${queue.request.ack}" ref="MQMessageACKListener"/>
