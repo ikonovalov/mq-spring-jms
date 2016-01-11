@@ -32,10 +32,9 @@
           p:password="${wmq.qmgr.password}">
     </bean>
 
-    <bean id="jmsQueueCachingConnectionFactorySecured"
-          class="org.springframework.jms.connection.CachingConnectionFactory"
+    <bean id="jmsQueueSingleConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory"
           p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured"
-          p:sessionCacheSize="10">
+          p:reconnectOnException="true">
     </bean>
 
     <!-- JMS Destination Resolver -->
@@ -43,7 +42,7 @@
 
     <!-- JMS Queue Template -->
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate"
-          p:connectionFactory-ref="jmsQueueCachingConnectionFactorySecured"
+          p:connectionFactory-ref="jmsQueueSingleConnectionFactory"
           p:destinationResolver-ref="jmsDestinationResolver"
           p:receiveTimeout="10000">
     </bean>

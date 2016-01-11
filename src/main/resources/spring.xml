@@ -25,7 +25,7 @@
           p:hostName="${wmq.qmgr.host}"
           p:queueManager="${wmq.qmgr.name}"
           p:transportType="0"
-          p:channel="${wmq.qmgr.channel}">
+          p:channel="${wmq.qmgr.channel}"
           p:CCSID="${wmq.qmgr.ccid}">
     </bean>
 
@@ -55,18 +55,18 @@
     </bean>
 
     <!-- don't use caching. It has some side effects. -->
-    <bean id="jmsQueueCachingConnectionFactorySecured"
+    <!--<bean id="jmsQueueCachingConnectionFactorySecured"
           class="org.springframework.jms.connection.CachingConnectionFactory"
           p:targetConnectionFactory-ref="jmsQueueConnectionFactorySecured"
           p:sessionCacheSize="10">
-    </bean>
+    </bean>-->
 
     <!-- JMS Destination Resolver -->
     <bean id="jmsDestinationResolver" class="org.springframework.jms.support.destination.DynamicDestinationResolver"/>
 
     <!-- JMS Queue Template -->
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate"
-          p:connectionFactory-ref="jmsQueueCachingConnectionFactorySecured"
+          p:connectionFactory-ref="jmsQueueSingleConnectionFactory"
           p:destinationResolver-ref="jmsDestinationResolver"
           p:receiveTimeout="10000">
     </bean>
